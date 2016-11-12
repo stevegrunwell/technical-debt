@@ -4,7 +4,7 @@ Every decision we make in our projects has the potential to increase or reduce t
 
 This talk covers the concept of technical debt, its potential to devastate projects, and red flags that project teams can look for to reduce its impact before it spirals out of control.
 
-**[View slides](http://stevegrunwell.github.io/technical-debt)**
+**[View slides](https://stevegrunwell.github.io/technical-debt)**
 
 
 ## Presentation History
