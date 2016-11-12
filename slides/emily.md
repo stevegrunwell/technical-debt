@@ -1,0 +1,1 @@
+<!-- .slide: data-background-image="resources/emily.jpg" data-background-position="center top" data-background-size="cover" -->
