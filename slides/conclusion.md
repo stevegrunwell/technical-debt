@@ -5,8 +5,8 @@
 * <!-- .element: class="fragment" --> Document not only how, buy *why*
 * Test the result, not the implementation <!-- .element: class="fragment" -->
 * Clean up old functionality <!-- .element: class="fragment" -->
-* Dependency management <!-- .element: class="fragment" -->
 * Avoid "ooh, shiny!" <!-- .element: class="fragment" -->
+* Dependency management <!-- .element: class="fragment" -->
 
 Note:
 
@@ -22,6 +22,6 @@ We're ensuring that not only are we writing tests, but we're focused on the resu
 
 We're making sure we're cleaning up old functionality that we don't need anymore, and making sure new functionality we write can easily be removed later, if necessary.
 
-We're being smart about how we handle application dependencies.
+We're resisting the urge to jump on every bandwagon that rolls through town.
 
-And finally, we're resisting the urge to jump on every bandwagon that rolls through town.
+And finally, we're being smart about how we handle application dependencies.
