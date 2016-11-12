@@ -1,4 +1,4 @@
-<!-- .slide: data-background-image="resources/doug.jpg" data-background-position="center top" data-background-size="cover" -->
+<!-- .slide: class="has-background-image" data-background-image="resources/doug.jpg" data-background-position="center top" data-background-size="cover" -->
 
 ### Stay focused!
 

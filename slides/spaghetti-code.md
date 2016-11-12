@@ -1,4 +1,4 @@
-<!-- .slide: data-background="resources/spaghetti.jpg" data-background-size="cover" -->
+<!-- .slide: class="has-background-image" data-background="resources/spaghetti.jpg" data-background-size="cover" -->
 
 ### Spaghetti Code
 

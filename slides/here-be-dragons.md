@@ -1,4 +1,4 @@
-<!-- .slide: data-background-image="resources/trogdor.jpg" data-background-position="center bottom" data-background-repeat="no-repeat" data-background-color="#fff" data-background-size="contain" -->
+<!-- .slide: class="has-background-image" data-background-image="resources/trogdor.jpg" data-background-position="center bottom" data-background-repeat="no-repeat" data-background-color="#fff" data-background-size="contain" -->
 
 ### Here be Dragons
 

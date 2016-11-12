@@ -293,6 +293,12 @@ body {
   .reveal .slides-link + .slides-link {
     margin-top: 0; }
 
+.reveal .has-background-image h2, .reveal .has-background-image h3, .reveal .has-background-image h4, .reveal .has-background-image h5, .reveal .has-background-image h6, .reveal .has-background-image p, .reveal .has-background-image li {
+  text-shadow: 0 0 .25em #000; }
+
+.reveal .has-background-image.has-light-background h2, .reveal .has-background-image.has-light-background h3, .reveal .has-background-image.has-light-background h4, .reveal .has-background-image.has-light-background h5, .reveal .has-background-image.has-light-background h6, .reveal .has-background-image.has-light-background p, .reveal .has-background-image.has-light-background li {
+  text-shadow: 0 0 .25em #fff; }
+
 .bus-factor-logo {
   height: 6em;
   overflow: hidden;

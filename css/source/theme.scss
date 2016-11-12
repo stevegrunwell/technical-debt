@@ -63,6 +63,18 @@ section.has-light-background {
 			margin-top: 0;
 		}
 	}
+
+	.has-background-image {
+		h2, h3, h4, h5, h6, p, li {
+			text-shadow: 0 0 .25em #000;
+		}
+
+		&.has-light-background {
+			h2, h3, h4, h5, h6, p, li {
+				text-shadow: 0 0 .25em #fff;
+			}
+		}
+	}
 }
 
 .bus-factor-logo {
