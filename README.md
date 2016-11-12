@@ -10,3 +10,9 @@ This talk covers the concept of technical debt, its potential to devastate proje
 ## Presentation History
 
 * [php[world] 2016](https://world.phparch.com/) - November 17, 2016
+* [WordPress DC Meetup](https://www.meetup.com/wordpressdc/events/235165630/) - November 15, 2016
+
+## Notes
+
+* Spaghetti photo [courtesy of Pixabay](https://pixabay.com/p-316525/).
+* Waterfall photo by [Jeffrey Workman](https://unsplash.com/photos/YvkH8R1zoQM).
