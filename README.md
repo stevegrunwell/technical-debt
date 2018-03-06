@@ -16,3 +16,4 @@ This talk covers the concept of technical debt, its potential to devastate proje
 
 * Spaghetti photo [courtesy of Pixabay](https://pixabay.com/p-316525/).
 * Waterfall photo by [Jeffrey Workman](https://unsplash.com/photos/YvkH8R1zoQM).
+* Comic strip by [CommitStrip](http://www.commitstrip.com/en/2015/04/07/just-an-exception-they-said/)
