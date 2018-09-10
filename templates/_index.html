@@ -53,12 +53,15 @@
                 <% }); %>
             </div>
 
+            <footer>
+                <a href="https://stevegrunwell.com">@stevegrunwell</a> - <a href="https://stevegrunwell.com/slides/technical-debt">stevegrunwell.com/slides/technical-debt</a>
+            </footer>
+
         </div>
 
         <script src="bower_components/reveal.js/lib/js/head.min.js"></script>
         <script src="bower_components/reveal.js/js/reveal.js"></script>
         <script>
-            var gaPropertyID = 'UA-72219675-8';
           // Full list of configuration options available at:
           // https://github.com/hakimel/reveal.js#configuration
           Reveal.initialize({
@@ -78,8 +81,7 @@
               { src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( '[data-html]' ) || !!document.querySelector( 'pre code' ) || !!document.querySelector( '[data-markdown]' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
               { src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true },
               { src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true },
-              { src: 'js/loadhtmlslides.js', condition: function() { return !!document.querySelector( '[data-html]' ); } },
-              { src: 'js/reveal-ga.min.js' }
+              { src: 'js/loadhtmlslides.js', condition: function() { return !!document.querySelector( '[data-html]' ); } }
             ]
           });
 

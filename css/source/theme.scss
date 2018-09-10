@@ -1,51 +1,43 @@
 /**
- * Black theme for reveal.js. This is the opposite of the 'white' theme.
+ * White theme for reveal.js. This is the opposite of the 'black' theme.
  *
- * Copyright (C) 2015 Hakim El Hattab, http://hakim.se
+ * By Hakim El Hattab, http://hakim.se
  */
-
- // This file has been copied over from
- // ../../bower_components/reveal.js/css/theme/source/black.scss
-
- // See ../../bower_components/reveal.js/css/theme/README.md
- // for further explanations on how to create a custom reveal.js theme.
 
 // Default mixins and settings -----------------
 @import "../../bower_components/reveal.js/css/theme/template/mixins";
 @import "../../bower_components/reveal.js/css/theme/template/settings";
 // ---------------------------------------------
 
-
 // Include theme-specific fonts
-@import url(../bower_components/reveal.js/lib/font/source-sans-pro/source-sans-pro.css);
-
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans');
 
 // Override theme settings (see ../../bower_components/reveal.js/css/theme/template/settings.scss)
-$backgroundColor: #222;
+$backgroundColor: #fff;
 
-$mainColor: #fff;
-$headingColor: #fff;
+$mainColor: #434850;
+$headingColor: #333;
 
 $mainFontSize: 38px;
-$mainFont: 'Source Sans Pro', Helvetica, sans-serif;
-$headingFont: 'Source Sans Pro', Helvetica, sans-serif;
+$mainFont: 'Open Sans', sans-serif;
+$headingFont: Montserrat, 'Open Sans', sans-serif;
 $headingTextShadow: none;
 $headingLetterSpacing: normal;
 $headingTextTransform: uppercase;
-$headingFontWeight: 600;
-$linkColor: #42affa;
-$linkColorHover: lighten( $linkColor, 15% );
+$headingFontWeight: 400;
+$linkColor: #5992bf;
+$linkColorHover: #396b93;
 $selectionBackgroundColor: lighten( $linkColor, 25% );
 
-$heading1Size: 2.5em;
-$heading2Size: 1.6em;
-$heading3Size: 1.3em;
+$heading1Size: 2em;
+$heading2Size: 1.3em;
+$heading3Size: 1.1em;
 $heading4Size: 1.0em;
 
-section.has-light-background {
-	&, h1, h2, h3, h4, h5, h6 {
-		color: #222;
-	}
+section.has-dark-background {
+    &, h1, h2, h3, h4, h5, h6 {
+        color: #fff;
+    }
 }
 
 // Theme template ------------------------------
@@ -53,28 +45,92 @@ section.has-light-background {
 // ---------------------------------------------
 
 .reveal {
+    footer {
+      position: fixed;
+      top: auto;
+      bottom: 1em;
+      left: 1em;
+      padding: .5em;
+      z-index: 100;
+      font-size: 0.5em;
+      background: rgba(255, 255, 255, 0.7);
 
-	.slides-link {
-		display: block;
-		margin-top: 2em;
-		font-size: .86em;
-		white-space: nowrap;
-		+ .slides-link {
-			margin-top: 0;
-		}
-	}
+      a {
+        color: darken($linkColor, 15%);
+      }
+    }
 
-	.has-background-image {
-		h2, h3, h4, h5, h6, p, li {
-			text-shadow: 0 0 .25em #000;
-		}
+    output {
+        @extend code;
+    }
+}
 
-		&.has-light-background {
-			h2, h3, h4, h5, h6, p, li {
-				text-shadow: 0 0 .25em #fff;
-			}
-		}
-	}
+.slides {
+    h1, h2, h3, h4, h5, h6 {
+        line-height: 1.35;
+
+        img {
+            border: none;
+            box-shadow: none;
+            max-width: 50%;
+            max-height: 1.5em;
+        }
+
+        code {
+            text-transform: none;
+        }
+    }
+
+    .has-background-image {
+        h2, h3, h4, h5, h6, p, li {
+            display: inline-block;
+            padding: .25em .5em;
+            background: rgba(255, 255, 255, 0.7);
+        }
+    }
+
+    a {
+        &:hover {
+            img {
+                box-shadow: none;
+            }
+        }
+    }
+
+    cite {
+        display: block;
+        margin-top: 1em;
+        font-size: .8em;
+    }
+
+    .slides-link {
+        display: block;
+        margin-top: 1em;
+        font-size: .86em;
+        white-space: nowrap;
+        + .slides-link {
+            margin-top: 0;
+        }
+    }
+
+    .seamless {
+        &, img {
+            background: none;
+            border: none;
+            box-shadow: none;
+        }
+    }
+
+    .no-text-transform {
+        text-transform: none;
+    }
+
+    .title-slide {
+        h1 {
+            font-size: $heading3Size;
+            margin-bottom: 2em;
+        }
+    }
 }
 
 .bus-factor-logo {

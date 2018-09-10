@@ -1,4 +1,4 @@
-<!-- .slide: data-background-image="resources/waterfall.jpg" data-background-position="center center" data-background-size="cover" -->
+<!-- .slide: data-background-image="resources/waterfall.jpg" data-background-position="center center" data-background-size="cover" data-background-color="#000" -->
 
 ### Don't go chasing waterfalls
 
