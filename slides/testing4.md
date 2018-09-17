@@ -3,9 +3,11 @@
  * Convert a string to all caps and append an exclamation mark.
  *
  * @param string $string The string to yell from the rooftops.
+ *
  * @return string The string, but louder.
  */
-function rage($string) {
+function rage(string $string): string
+{
 	$letters = str_split($string);
 	$letters = array_map('strtoupper', $letters);
 

@@ -6,9 +6,10 @@
  * more coffee needs to be brewed, which helps us avoid throwing
  * NoCoffee exceptions.
  *
- * @return CoffeeCup A CoffeeCup instance.
+ * @return Coffee Some fresh, hot coffee.
  */
-function getCoffee() {
+public function getCoffee(): Coffee
+{
 	// ...
 }
 ```

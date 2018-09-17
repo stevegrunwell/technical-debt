@@ -10,18 +10,11 @@
 
 Note:
 
-What have we learned today?
-
-First, technical debt is inevitable – we can't build things without incurring some sort of debt. What we *can* do is make sure we're minimizing the impact of it.
-
-We've ever vigilant, always watching for red flags in our projects.
-
-We're documenting not only how something works, but why it's there. That, combined with code review, is lowering our bus factor.
-
-We're ensuring that not only are we writing tests, but we're focused on the result, not the implementation.
-
-We're making sure we're cleaning up old functionality that we don't need anymore, and making sure new functionality we write can easily be removed later, if necessary.
-
-We're resisting the urge to jump on every bandwagon that rolls through town.
-
-And finally, we're being smart about how we handle application dependencies.
+- What have we learned today?
+    + Tech debt is inevitable, but we can be aware of how much we're taking on
+    + Ever vigilant, always watching for red flags in our projects.
+    + Document not only how, but why; reduce bus factor
+    + Writing tests, focused on result, not implementation
+    + Cleaning up old functionality and ensuring new features can be removed easily
+    + Resisting the urge to jump on every bandwagon
+    + Being smart about how we handle application dependencies

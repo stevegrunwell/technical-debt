@@ -9,10 +9,7 @@
 
 Note:
 
-Just like with personal finance, there's good and bad technical debt.
-
-Good debt is the stuff you and your team understand: it's clear in what it does, hopefully it has some tests around it, and it's basically just the cost of doing business.
-
-This doesn't mean it's perfect code, but it's understood what it does.
-
-The bad is where things get ugly, and we'll go through each of these: exceptions, black boxes, and spaghetti code.
+- Just like personal finance, there's good and bad technical debt
+- Good debt == stuff you and your team understand.
+    - May not be perfect, but clear in its purpose and hopefully tested — the cost of doing business.
+- Bad debt (examples to follow)

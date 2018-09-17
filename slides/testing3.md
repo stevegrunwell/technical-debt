@@ -1,5 +1,6 @@
 ```php
-public function testRage() {
+public function testRage()
+{
 	$this->assertEquals('HELLO!!!', rage('hello'));
 }
 ```
