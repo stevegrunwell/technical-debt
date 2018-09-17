@@ -8,10 +8,5 @@
 
 Note:
 
-Let's take a look at a WordPress example: let's imagine we're registering a custom post type for recipes.
-
-We'll definitely have our function that registers the post type, but we'll probably need a custom meta box too, so let's register that.
-
-Of course, if we register a custom meta box, we need the callback to print the content. Then we need to save that custom meta.
-
-Oh, and maybe we need some custom template tags to display it on the front-end...wow, we haven't done much but that's a lot of stuff going into functions.php.
+- WordPress example: might need all of these functions for some custom recipe functionality
+- This would be a lot of stuff going into functions.php

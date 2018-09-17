@@ -2,8 +2,9 @@
 /**
  * Get me some coffee.
  */
-function getCoffee() {
-	$pot = CoffeePot::getInstance();
+public function getCoffee(): Coffee
+{
+	$pot = $this->getCoffeePot();
 
 	if (! $pot->hasCoffee()) {
 		$pot->makeCoffee();

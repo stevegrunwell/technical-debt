@@ -4,4 +4,4 @@
 
 Note:
 
-Sorry to drop the "D-word" here, but it's essential for maintaining an understandable codebase.
+- Try to capture the necessary context for *why* something is the way it is in your inline docs
