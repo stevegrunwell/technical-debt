@@ -9,6 +9,7 @@ This talk covers the concept of technical debt, its potential to devastate proje
 
 ## Presentation History
 
+* [PHPDX](https://www.meetup.com/PDX-PHP/events/bfwlbqyxmbxb/) — September 17, 2018
 * [php[world] 2016](https://world.phparch.com/) - November 17, 2016 ([joind.in](https://joind.in/talk/49e0b))
 * [WordPress DC Meetup](https://www.meetup.com/wordpressdc/events/235165630/) - November 15, 2016
 
