@@ -2,7 +2,7 @@
 
 * Technical debt is a part of life <!-- .element: class="fragment" -->
 * Be on the lookout for red flags <!-- .element: class="fragment" -->
-* <!-- .element: class="fragment" --> Document not only how, buy *why*
+* <!-- .element: class="fragment" --> Document not only how, but *why*
 * Test the result, not the implementation <!-- .element: class="fragment" -->
 * Clean up old functionality <!-- .element: class="fragment" -->
 * Avoid "ooh, shiny!" <!-- .element: class="fragment" -->
