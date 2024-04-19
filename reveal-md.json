@@ -1,0 +1,21 @@
+{
+    "title": "Up to my Eyeballs in Technical Debt!",
+    "theme": "white",
+    "highlightTheme": "a11y-dark",
+    "css": [
+        "resources/styles.css"
+    ],
+    "scripts": [
+        "resources/scripts.js"
+    ],
+    "absoluteUrl": "https://stevegrunwell.github.io/technical-debt/",
+    "revealOptions": {
+        "controls": true,
+        "controlsTutorial": false,
+        "pause": true,
+        "pdfSeparateFragments": false,
+        "progress": false,
+        "slideNumber": false,
+        "transition": "none"
+    }
+}
