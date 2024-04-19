@@ -7,7 +7,7 @@ Steve Grunwell <!-- .element: class="byline" -->
 
 ---
 
-## Understanding Technical Debt
+## Understanding<br>Technical Debt
 
 Note:
 
@@ -58,7 +58,7 @@ Note:
 
 #### Software is all about trade-offs
 
-![Meme from Spaceballs (1987) where Dark Helmet is talking to Colonel Sanders in the desert, with the caption "He got the upside, I got the downside. See, there's two sides to every Schwartz"](resources/schwartz.png) <!-- .element: style="max-height: 40vh;" -->
+![Meme from Spaceballs (1987) where Dark Helmet is talking to Colonel Sanders in the desert, with the caption "He got the upside, I got the downside. See, there's two sides to every Schwartz"](resources/schwartz.png) <!-- .element: style="max-height: 60vh;" -->
 
 Note:
 
@@ -72,7 +72,7 @@ Ultimately, software is all about trade-offs:
 
 ### Technical Debt in the Real World
 
-Success + Tech Debt are not mutually exclusive!
+_Success + Tech Debt are not mutually exclusive!_
 
 * <!-- .element: class="fragment" --> Banking systems still running COBOL
 * <!-- .element: class="fragment" --> WordPress: ~43% of web, "compatible with exceptions" for PHP 8.x
@@ -96,7 +96,9 @@ Technical debt is everywhere:
 
 ----
 
-### Technical Debt is a Slow Boil
+<!-- .slide: data-background-image="resources/lobster-hot-tub.png" data-background-size="cover" data-background-opacity="0.7" -->
+
+### Technical Debt is a Slow Boil <!-- .element: style="padding-bottom: 4em;"-->
 
 Note:
 
@@ -178,7 +180,7 @@ Note:
 
 ----
 
-<!-- .slide: class="has-background-image" data-background-image="resources/trogdor.jpg" data-background-position="center bottom" data-background-repeat="no-repeat" data-background-color="#fff" data-background-size="contain" -->
+<!-- .slide: data-background-image="resources/trogdor.png" data-background-repeat="no-repeat" data-background-size="contain" data-background-position="10% center" data-background-opacity="0.4" -->
 
 #### Here be Dragons
 
@@ -195,8 +197,8 @@ Note:
 
 * <!-- .element: class="fragment" --> Describe the behavior, not the implementation
 * <!-- .element: class="fragment" --> Too many mocks (including the SUT!)
-* <!-- .element: class="fragment" --> Asserting that *any* exception is thrown
-* <!-- .element: class="fragment" --> Loose comparisons (e.g. `false == null`)
+* <!-- .element: class="fragment" --> Asserting that <u>any</u> exception is thrown
+* <!-- .element: class="fragment" --> Loose comparisons (e.g. false == null)
 
 Note:
 
@@ -234,7 +236,7 @@ If your test fails because the formatting of the markup changed, then this test 
 
 #### Branching for special cases <!-- .element: class="screen-reader-text" -->
 
-![Four panel comic from Commit Strip. In the first panel, the developer tells the Product Manager "No. Just No." as the PM pleads "Come on...only one small exception". Panel two continues, with the developer stating "It's a self-service SaaS, we can't handle individual requests" while the PM reasons "Come on...just a tiny IF. A ridiculously tiny IF...". In panel three, the PM continues "It's one of our biggest customers...I'll owe you one!". The developer hesitates, saying "I shouldn't...". In panel four, set later, the Database Engineer asks the dev "Where you do you manage clients' special requests", to which the dev responds defeatedly "model/clients.php. There's a switch with 145 cases, just add yours".](resources/commitstrip-exceptions.jpg) <!-- .element: style="max-height: 55vh;"-->
+![Four panel comic from Commit Strip. In the first panel, the developer tells the Product Manager "No. Just No." as the PM pleads "Come on...only one small exception". Panel two continues, with the developer stating "It's a self-service SaaS, we can't handle individual requests" while the PM reasons "Come on...just a tiny IF. A ridiculously tiny IF...". In panel three, the PM continues "It's one of our biggest customers...I'll owe you one!". The developer hesitates, saying "I shouldn't...". In panel four, set later, the Database Engineer asks the dev "Where you do you manage clients' special requests", to which the dev responds defeatedly "model/clients.php. There's a switch with 145 cases, just add yours".](resources/commitstrip-exceptions.jpg) <!-- .element: style="max-height: 80vh;"-->
 
 Note:
 
@@ -329,11 +331,10 @@ Notice we didn't mention anything about, for example, ripping out that old enum 
 #### How will we address this?
 
 1. <!-- .element: class="fragment" --> Install/upgrade static code analysis tools
-2. <!-- .element: class="fragment" --> Resolve issues caught by static code analysis
-3. <!-- .element: class="fragment" --> Resolve issues surfaced by test suite(s)
-4. <!-- .element: class="fragment" --> Pre-prod testing w/ PHP 8.3
-5. <!-- .element: class="fragment" --> Slow roll out 8.3 image across hosts
-6. <!-- .element: class="fragment" --> Clean up PHP 7.x leftovers
+2. <!-- .element: class="fragment" --> Resolve issues caught by static code analysis, test suite(s)
+3. <!-- .element: class="fragment" --> Pre-prod testing w/ PHP 8.3
+4. <!-- .element: class="fragment" --> Slow roll out 8.3 image across hosts
+5. <!-- .element: class="fragment" --> Clean up PHP 7.x leftovers
 
 Note:
 
@@ -341,16 +342,15 @@ Now we know what we're hoping to accomplish, so now we need to determine how we 
 
 1. If we already have a static code analysis tool, make sure it's current.
     * If not, now would be a good time to install one
-2. Tell the tool that we're targeting PHP 8 and let it tell us where we might have issues
-3. Next, get the tests running on PHP 8
+2. Tell the tool that we're targeting PHP 8 and let it tell us where we might have issues. Then get the tests running on PHP 8
     * Good test suites will cover large portions of the app
     * No tests? This would be a very good time to start!
-4. Next, we want to manually test things
+3. Next, we want to manually test things
     * If you have a QA team, they'll be vital here
     * Involve SMEs to ensure things continue to work as expected
-5. Finally, start rolling out PHP 8 on production
+4. Finally, start rolling out PHP 8 on production
     * If possible, don't upgrade all servers at once
-6. Once you're on PHP 8, clean up any PHP 7-specific paths you may have added
+5. Once you're on PHP 8, clean up any PHP 7-specific paths you may have added
 
 ----
 
@@ -655,10 +655,9 @@ Note:
 
 ### [Rector](https://github.com/rectorphp/rector)
 
-* <!-- .element: class="screen-reader-text" --> "Automated Refactoring" using the PHP AST
-* <!-- .element: class="screen-reader-text" --> Not a magic bullet!
-* <!-- .element: class="screen-reader-text" --> Best paired with automated coding standard fixers
-    * [h/t Andy Snell](https://github.com/andysnell/downgrade-to-upgrade)
+* <!-- .element: class="fragment" --> "Automated Refactoring" using the PHP AST
+* <!-- .element: class="fragment" --> Not a magic bullet!
+* <!-- .element: class="fragment" --> Best paired with automated coding standard fixers (<a href="https://github.com/andysnell/downgrade-to-upgrade">h/t Andy Snell</a>)
 
 Note:
 
@@ -690,7 +689,7 @@ Note:
 
 ### Code review
 
-Just Do It.
+![Lisa Simpson, desperate for attention from Marge (or anyone, really), hopping up and down pleading "Grade me! Look at me! Evaluate and rank me!"](resources/lisa-grade-me.gif)
 
 Note:
 
@@ -783,7 +782,7 @@ Note:
 
 ----
 
-<!-- .slide: data-background-image="resources/waterfall.jpg" data-background-size="cover" data-background-opacity="0.4" -->
+<!-- .slide: data-background-image="resources/waterfall.jpg" data-background-size="cover" data-background-opacity="0.3" -->
 
 ### Don't Go Chasing Waterfalls
 
@@ -805,8 +804,8 @@ Note:
 
 Note:
 
-If in doubt, lean on functionality within the programming language. This is generally less prone to major breaking changes than the flavor of the week library or framework
-
+* If in doubt, lean on functionality within the programming language. This is generally less prone to major breaking changes than the flavor of the week library or framework
+* If nothing else, plenty of great, well-tested libraries out there that are designed to do one thing exceedingly well.
 
 ---
 
