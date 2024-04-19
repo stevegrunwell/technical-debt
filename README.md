@@ -11,6 +11,8 @@ This talk covers the concept of technical debt, its potential to devastate proje
 * [Downgrade to Upgrade and Other Composer Tricks](https://github.com/andysnell/downgrade-to-upgrade) — Presentation by [@AndySnell](https://github.com/andysnell) that covers (among other things) Rector
 * [PHP Compatibility and WordPress Versions](https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/) - Chart showing PHP compatibility across WordPress versions
 * [Usage Statistics and Market Share of WordPress](https://w3techs.com/technologies/details/cm-wordpress) - W3Techs metrics for WordPress
+* [The Essential Craigslist Statistics Every Freelancer Should Know in 2023](https://firstsiteguide.com/craigslist-stats/) - Did I remember to mention how much revenue Craigslist brings in? This is where it comes from!
+* [What is Opportunity Cost?](https://www.investopedia.com/terms/o/opportunitycost.asp) - Article on Opportunity Cost from Investopedia
 
 ### Tools
 
@@ -34,3 +36,4 @@ This talk covers the concept of technical debt, its potential to devastate proje
 * Waterfall photo by [Jeffrey Workman](https://unsplash.com/photos/YvkH8R1zoQM).
 * Comic strip by [CommitStrip](http://www.commitstrip.com/en/2015/04/07/just-an-exception-they-said/)
 * Trogdor fanart by [Fortnermations on DeviantArt](https://www.deviantart.com/fortnermations/art/Trogdor-the-Burninator-834046898)
+* Lobster in a hot tub graphic [by Geico](https://www.youtube.com/watch?v=CLob0veE59M&t=30s)

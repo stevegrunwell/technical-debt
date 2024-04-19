@@ -21,9 +21,11 @@ Challenges resulting from past decisions to favor <u>speed, simplicity, or cost<
 
 Note:
 
-Ask 100 different engineers and you'll (somehow) get 104 different definitions of technical debt.
+If you ask 10 different engineers to define technical debt, somehow you'll get 15 different answers.
 
 For the sake of the talk today, we're going to define technical debt thusly.
+
+Keep in mind, technical debt doesn't just mean "bad" or "legacy" code, either...
 
 ----
 
@@ -40,7 +42,7 @@ For the sake of the talk today, we're going to define technical debt thusly.
 
 Note:
 
-Keep in mind that technical debt doesn't just mean "bad" or "legacy" code: right now your front-end team might be deciding to move to React, and that comes with pros and cons
+Right now your front-end team might be deciding to move to React, and that comes with pros and cons
 
 ----
 
@@ -70,6 +72,23 @@ Ultimately, software is all about trade-offs:
 
 ----
 
+### ECON Sidequest: Opportunity Cost
+
+_What am I missing out on by doing this instead of something else?_ <!-- .element: class="fragment" -->
+
+Note:
+
+A short econ lesson: business types love talking about opportunity cost.
+
+* New Oxford American Dictionary: the loss of potential gain from other alternatives when one alternative is chosen
+* Is it worth more to address the technical debt or focus on (for example) new features that could drive revenue?
+* Imagine you're a freelancer, making $100/hr. It takes you one hour to mow your lawn. Neighbor kid offers to mow it for $50.
+    * On paper, if you do client work in that hour, you come out $50 ahead (assuming you have client work lined up)
+    * In reality, maybe you enjoy mowing the lawn (or at least the fresh air) or you've already done as much freelance work as you can bear
+* Keep this in mind as you pitch projects for cleaning up technical debt to your managers!
+
+----
+
 ### Technical Debt in the Real World
 
 _Success + Tech Debt are not mutually exclusive!_
@@ -77,7 +96,6 @@ _Success + Tech Debt are not mutually exclusive!_
 * <!-- .element: class="fragment" --> Banking systems still running COBOL
 * <!-- .element: class="fragment" --> WordPress: ~43% of web, "compatible with exceptions" for PHP 8.x
 * <!-- .element: class="fragment" --> Services on outdated servers/dependencies
-* <!-- .element: class="fragment" --> Work-arounds for <abbr title="High-Value Customers">HVCs</abbr>
 * <!-- .element: class="fragment" --> "Legacy" applications
 
 Note:
@@ -91,14 +109,15 @@ Technical debt is everywhere:
     - Part of the market strategy is making it easy to run WordPress _anywhere_, and cheap hosts aren't usually current on PHP
 * Services you use every day, perhaps even to power your business, are often running outdated server software, dependencies, etc.
     - Opportunity cost: what value could those engineers be driving instead of constantly updating?
-* Any time a high-value customer needs something to work a little differently and a dev drops in a conditional
 * So-called "legacy" applications that still bring in millions in revenue
+    - Craigslist made $660M in revenue in 2021!
 
 ----
 
 <!-- .slide: data-background-image="resources/lobster-hot-tub.png" data-background-size="cover" data-background-opacity="0.7" -->
 
-### Technical Debt is a Slow Boil <!-- .element: style="padding-bottom: 4em;"-->
+### Technical Debt is a Slow Boil
+<!-- .element: style="padding-bottom: 4em;"-->
 
 Note:
 
@@ -123,49 +142,220 @@ Note:
 2. You're constantly fighting fires due to things breaking
 3. Your top engineers are looking for new jobs
     * Even your IDE wants to quit
-    * Worse yet, the toxic dev who wrote this 10 years ago and is the only one who understands it is the only one sticking around because "job security"
 4. You have more EOL dependencies than supported ones
 5. The docs for your library versions are so old you have to visit the Internet Archive to reach them
 
-Common mainfestations of bad technical debt include:
+---
 
-----
-
-<!-- .slide: class="has-background-image" data-background="resources/spaghetti.jpg" data-background-size="cover" data-background-opacity="40%" -->
-
-#### Spaghetti Code
+## Refactoring 101
 
 Note:
 
-* Code that's difficult to navigate through, like a big plate of spaghetti
-* Often the result of poorly thought-out or ever-changing business requirements
-    - Causes developers to waste a lot of time sorting things out
-    - Difficult to onboard into
-    - Breeding ground for tough-to-track-down bugs
+* Will talk about specific manifestations of technical debt in a moment
+* First, there are a few principles you should know and apply liberally as you refactor:
 
 ----
 
-#### Committed libraries
+### Start with Tests
+
+* <!-- .element: class="fragment" --> Safety net for today and tomorrow
+* <!-- .element: class="fragment" --> Focus on the big picture
+* <!-- .element: class="fragment" --> Continuous Integration FTW!
+
+Note:
+
+* Before you change anything, you should make sure that you have good integration and/or e2e tests around your application
+    * Critical flows (signup, login, checkout, etc.) and the areas you're working on
+    * These act as guardrails or a safety net, ensuring that you don't accidentally break anything as you refactor
+    * Tests will then live on, aiding in future refactors
+* Focus more on integration + e2e tests; individual functions/methods may change considerably, so unit tests are less helpful here
+    * Write tests as you write new code during the refactor (including unit tests!)
+* These tests should be run as part of your CI pipeline on every push
+    * Don't have a CI pipeline? No time like the present!
+
+----
+
+### Static Code Analysis
+
+* <!-- .element: class="fragment" --> Inspect your code without running it
+    * [PHPStan](https://phpstan.org), [Phan](https://github.com/phan/phan), [Psalm](https://psalm.dev/)
+* <!-- .element: class="fragment" --> Find type + logical errors
+* <!-- .element: class="fragment" --> Tune it to avoid a firehose!
+
+Note:
+
+* Static code analysis is a method of analyzing your code without having to run it
+* Great at catching logical errors, type issues, etc.
+    * Many can also help you identify dead code paths
+* Turning it on without tuning will hurt your feelings
+
+----
+
+#### Tuning Static Code Analysis
+
+1. <!-- .element: class="fragment" --> Unknown classes/functions/methods, wrong number of args, etc.
+2. <!-- .element: class="fragment" --> Potentially undefined vars, invalid PHPDocs
+3. <!-- .element: class="fragment" --> Unreachable code, conditionals that will always pass/fail
+4. <!-- .element: class="fragment" --> Strict types, etc.
+
+Note:
+
+* Most static code analysis tools let you dial in the things you care about
+* If you're just introducing static code analysis, start with the lowest level and, as you address (or suppress) issues, you can turn this up
+
+----
+
+### Backfill Documentation
+
+![George McFly, writing in his notepad while talking to Marty, saying "I'm writing this down, this is good stuff."](resources/writing-this-down.gif)
+
+Note:
+
+* As you begin digging into the old, crusty code don't be afraid to take notes on your findings!
+    * Writing inline docs can help you keep track of your findings both today and tomorrow
+    * Remember to capture not only the how, but the _why_!
+* Documentation-only PRs are not only very low-risk, but also help you and other members of your team follow along.
+* Adding docblocks also helps static code analysis tools better analyze your code
+
+----
+
+### The Power of Package Managers
+
+* <!-- .element: class="fragment" --> Manage direct + intermediary dependencies
+* <!-- .element: class="fragment" --> Negotiates version constraints, conflicts
+* <!-- .element: class="fragment" --> Easily see what's out of date
+
+Note:
+
+Whenever possible, leverage the appropriate package manager for your language's ecosystem. In PHP that's Composer, and we're so lucky to have it!
+
+* Allow you to install and update dependencies, including any intermediary dependencies
+* Negotiates version constraints and conflicts with other packages
+* Easily see what packages have updates available
+
+----
+
+#### Composer in Action
+
+```sh [1|2]
+$ composer why-not php 8.3
+some-vendor/some-old package 1.2.3 requires php (^7.0)
+```
+<!-- .element: class="hide-line-numbers" -->
 
 ```sh
-# Make life harder with this one dumb trick!
-curl -O https://example.com/some-package.zip \
-    && unzip some-package.zip -d lib/some-package \
-    && rm some-package.zip \
-    && git add lib/some-package \
-    && git commit -m "I'm creating debt!!🙃"
+$ composer require "php:8.3" --dry-run
 ```
+<!-- .element: class="fragment" -->
 
 Note:
 
-* lib/ directories and similar, full of third-party code **not** managed by a tool like Composer
-* Congratulations, you've effectively adopted that dependency!
-    - Updates, conflicts, patches, and bugs are now your responsibility
-* When possible, you want to use an appropriate package manager
+* Composer can tell us which of our dependencies don't claim to support PHP 8.3
+* For even further details, you can run `composer require php:8.3` with the `--dry-run` flag and see what conflicts Composer has flagged
 
 ----
 
-#### @todo comments
+### Step Debugging
+
+* <!-- .element: class="fragment" --> Pause your code at certain points
+* <!-- .element: class="fragment" --> Inspect values, dig into function calls
+* <!-- .element: class="fragment" --> Worth the effort to configure!
+
+Note:
+
+If you really want to level up your refactoring game, learn to use a step debugger like Xdebug
+
+* Allows you to set breakpoints and freeze the execution when you reach it
+* From there, you can inspect the values of different variables, see the current stacktrace, and then progress through your code, one step at a time
+* Can be challenging to get set up, but way more powerful than die debugging
+
+---
+
+## Common Manifestations<br>of Technical Debt<br><small>(and how to fix them)</small>
+
+Note:
+
+With those fundamentals out of the way, let's look at some common manifestations of technical debt and how we might go about addressing them:
+
+----
+
+### Committed libraries
+
+* <!-- .element: class="fragment" --> Replace with copy managed by Composer
+* <!-- .element: class="fragment" --> Consider modern replacements
+
+Note:
+
+Not uncommon to come across apps with `lib` directories or similar, full of third-party code **not** managed by a tool like Composer
+    * Congratulations, you've effectively adopted that dependency!
+    * Updates, conflicts, patches, and bugs are now your responsibility
+
+* When possible, you want to use an appropriate package manager (e.g. Composer)
+* If the library predates Composer, you may want to start looking for more modern solutions
+    * You can ease this transition with the Adapter Pattern
+
+----
+
+#### Adapter Pattern
+
+* <!-- .element: class="fragment" --> Define an interface, then write library-specific implementations
+* <!-- .element: class="fragment" --> Makes it easier to swap out underlying libraries with minimal interruption
+* <!-- .element: class="fragment" --> Easier to test individual implementations
+
+Note:
+
+* Design pattern where you define a common interface, then write lightweight wrappers that implement those interfaces using different underlying libraries
+    * Decouples your app code from the underlying library: application code only uses the methods on the interface (often injected through a DI container or factory method)
+    * Your adapters are responsible for implementing the interface and interacting with the underlying libraries
+    * For the Laravel devs, this is like binding implementations to interfaces in the service container
+* Once the app is only focused on the interface, which adapter gets used is a matter of configuration
+    * Example: maybe you were sending email with Postmark, and you switch it to Mandrill. As long as they're both configured, nothing about the implementation should need to change (the app just knows it's sending through a `MailerInterface`)
+* Makes it easier to test individual implementations
+
+----
+
+<!-- .slide: class="has-background-image" data-background="resources/spaghetti.jpg" data-background-size="cover" data-background-opacity="0.3" -->
+
+### Spaghetti Code
+
+* <!-- .element: class="fragment" --> Don't forget to bring a test!
+* <!-- .element: class="fragment" --> Step debuggers will be a huge help!
+* <!-- .element: class="fragment" --> Extract what you can
+
+Note:
+
+Code that's difficult to navigate through, like a big plate of spaghetti
+    * Often the result of poorly thought-out or ever-changing business requirements
+    * Causes developers to waste a lot of time sorting things out
+    * Difficult to onboard into
+    * Breeding ground for tough-to-track-down bugs
+
+* As usual, start with tests
+    * The harder the code is to follow, the more important it is that you have broad, e2e tests
+* A step debugger is worth its weight in gold when navigating a noodly codebase
+* As you can, find ways to extract pieces into standalone classes or methods that you can more-easily test
+
+----
+
+<!-- .slide: data-background-image="resources/trogdor.png" data-background-repeat="no-repeat" data-background-size="contain" data-background-position="10% center" data-background-opacity="0.3" -->
+
+### Black Boxes
+
+* <!-- .element: class="fragment" --> Box of spaghetti?
+* <!-- .element: class="fragment" --> Start broad, then go narrow
+
+Note:
+
+If you find comments like "here be dragons", "I don't know why this works, it just does", and/or "Dear, sweet Jeebus, be careful!", you may have a black box
+    * where data goes in and comes out, but nobody's sure _how_ it works
+
+* In many ways, approach black boxes as you would spaghetti code: tests, step debugging, and writing docs as you go
+* Try to focus first on the big picture (what it's trying to do), then narrow in on the "how"
+* Try not to get burninated
+
+----
+
+### @todo comments
 
 ```php
 /**
@@ -177,78 +367,47 @@ Note:
 
 * `@todo` comments aren't inheriently-evil, but can be good indicator of incomplete/buggy code
 * Try to be as descriptive as possible; can this be linked to a Jira ticket or something?
+* Be sure to read existing comments: sometimes you'll find the "todo" is already "todone"
 
 ----
 
-<!-- .slide: data-background-image="resources/trogdor.png" data-background-repeat="no-repeat" data-background-size="contain" data-background-position="10% center" data-background-opacity="0.4" -->
-
-#### Here be Dragons
-
-Note:
-
-* Another comment you don't want to see
-    - I don't know why this works, it just does
-    - Dear, sweet Jeebus, be careful!
-* Black boxes: where data goes in and comes out, but nobody's sure _how_ it works
-
-----
-
-#### Useless Tests
+### Useless Tests
 
 * <!-- .element: class="fragment" --> Describe the behavior, not the implementation
-* <!-- .element: class="fragment" --> Too many mocks (including the SUT!)
+* <!-- .element: class="fragment" --> Too many mocks (including the <abbr title="System Under Test">SUT</abbr>!)
 * <!-- .element: class="fragment" --> Asserting that <u>any</u> exception is thrown
 * <!-- .element: class="fragment" --> Loose comparisons (e.g. false == null)
 
 Note:
 
-Bad tests can sometimes be worse than no tests at all!
+Brittle, tightly-coupled tests can sometimes be worse than no tests at all!
 
 * When people are just learning how to test (or worse, are told "you must have tests for everything" without guidance), they often fall into the trap of testing the implementation, not the intended behavior
     * Basically just writing the code twice, which defeats the purpose
-* Tests that mock *everything*, including SQL queries or even the method we're trying to test
-* Tests that expect that an exception—any exception—is thrown
-    * Becomes a problem when the exception you're catching isn't what you were expecting
-* Tests that use `assertEquals()` (loose comparison) for everything and don't know the difference between a false or null return (which could have very different meanings)
+* Tests that mostly serve as tests for the mocking library
+* Overly-broad expectations and assertions
+    * I expect a 500 error when my app can't talk to that API, so lemme just pass the test if I get _any_ exception (even a type error due to my own bug)
+    * `assertEquals()` instead of `assertSame()` where `0` and `false` are two possible returns with *very* different meanings
 
 ----
 
-#### Brittle Tests
-
-```diff [|1|2-7]
-- echo '<ul class="items"><li>Item 1</li><li>Item 2</li></ul>';
-+ echo <<<'HTML'
-+     <ul class="items">
-+         <li>Item 1</li>
-+         <li>Item 2</li>
-+     </ul>
-+     HTML;
-```
-<!-- .element: class="hide-line-numbers" style="font-size: .5em;" -->
-
-Note:
-
-Let's say you have a function that prints out an unordered list of items, and you have a test that verifies we see this list.
-
-If your test fails because the formatting of the markup changed, then this test is too brittle and can actually impede progress!
-
-----
-
-#### Branching for special cases <!-- .element: class="screen-reader-text" -->
+### Branching for special cases
+<!-- .element: class="screen-reader-text" -->
 
 ![Four panel comic from Commit Strip. In the first panel, the developer tells the Product Manager "No. Just No." as the PM pleads "Come on...only one small exception". Panel two continues, with the developer stating "It's a self-service SaaS, we can't handle individual requests" while the PM reasons "Come on...just a tiny IF. A ridiculously tiny IF...". In panel three, the PM continues "It's one of our biggest customers...I'll owe you one!". The developer hesitates, saying "I shouldn't...". In panel four, set later, the Database Engineer asks the dev "Where you do you manage clients' special requests", to which the dev responds defeatedly "model/clients.php. There's a switch with 145 cases, just add yours".](resources/commitstrip-exceptions.jpg) <!-- .element: style="max-height: 80vh;"-->
 
 Note:
 
-If your codebase is full of one-off "well, this particular customer requires this extra thing be enabled" branches, it becomes far more difficult to keep everything straight
-
-Worse yet, these rarely have appropriate tests, meaning when one of these one-off fixes breaks it's often for high-value customers.
-
-Ideally, these would be defined as attributes or feature flags that you can assign to individual customers.
+* Codebase is full of one-off "well, this particular customer requires this extra thing be enabled" conditionals
+    * Far more difficult to keep everything straight
+    * These "quick if statements" are rarely given appropriate tests, meaning when something breaks it's often for the high-value customers
+    * If customers churn, these may never get cleaned up
+* Ideally, these should be seen as attributes or flags you can enable on a per-user basis
+    * Ensure that you treat it as you would any other feature (including tests!)
 
 ----
 
-#### Dead Code
+### Dead Code
 
 !["Bring out yer dead" bit from Monty Python and the Holy Grail](resources/bring-out-yer-dead.gif)
 
@@ -258,6 +417,7 @@ Note:
     * Version 2 is live, but nobody removed v1 after launch
     * Code that's outlived its usefulness: One-time migration scripts, COVID-19 promos, etc.
 * Thanks to version control, dead code's never truly gone (but it doesn't need to be cluttering up your repo)
+* Leverage static code analysis, IDE capabilities, logging, and/or observability tools to see if a block of code is truly dead
 
 ---
 
@@ -272,11 +432,11 @@ Note:
 
 ### Define scope
 
-* <!-- .element: class="fragment" -->What are we hoping to solve?
-* <!-- .element: class="fragment" -->Why do we want to do this?
-* <!-- .element: class="fragment" -->What's our ideal state?
-* <!-- .element: class="fragment" -->How will we address this?
-* <!-- .element: class="fragment" -->How do we measure success?
+1. <!-- .element: class="fragment" -->What are we hoping to solve?
+2. <!-- .element: class="fragment" -->Why do we want to do this?
+3. <!-- .element: class="fragment" -->What's our ideal state?
+4. <!-- .element: class="fragment" -->How will we address this?
+5. <!-- .element: class="fragment" -->How do we measure success?
 
 Note:
 
@@ -287,6 +447,7 @@ Jumping right in without a strategy is likely how the app ended up with all this
 3. What's the ideal state? Where do you hope to be after this?
 4. How do you get from A to B? What needs to happen?
 5. How will you measure success?
+    * Very important when trying to sell management on the project
 
 ----
 
@@ -333,7 +494,7 @@ Notice we didn't mention anything about, for example, ripping out that old enum 
 1. <!-- .element: class="fragment" --> Install/upgrade static code analysis tools
 2. <!-- .element: class="fragment" --> Resolve issues caught by static code analysis, test suite(s)
 3. <!-- .element: class="fragment" --> Pre-prod testing w/ PHP 8.3
-4. <!-- .element: class="fragment" --> Slow roll out 8.3 image across hosts
+4. <!-- .element: class="fragment" --> Slow-roll 8.3 image across hosts
 5. <!-- .element: class="fragment" --> Clean up PHP 7.x leftovers
 
 Note:
@@ -362,309 +523,13 @@ Now we know what we're hoping to accomplish, so now we need to determine how we 
 
 Note:
 
-You may notice, a lot of these metrics match our described, ideal state
-
----
-
-## Strategies for Paying Down Technical Debt
-
-Note:
-
-As you've seen, the first step in addressing technical debt is identifying where it exists.
-
-Now let's talk about strategies for removing some of this technical debt.
-
-----
-
-### Start with Regression Tests!
-
-* <!-- .element: class="fragment" --> Write tests that capture existing behavior
-* <!-- .element: class="fragment" --> Ensures that as you make changes the app still does what it needs to do
-* <!-- .element: class="fragment" --> Focus on higher-level, end-to-end tests
-* <!-- .element: class="fragment" --> Continuous Integration FTW!
-
-Note:
-
-* Best place to start is capturing current behavior with tests
-* Doesn't need to cover everything, but critical flows (signup, login, payments, etc.)
-* Don't get wrapped up in all of the implementation details; e2e tests for critical paths
-* These tests should be run as part of your CI pipeline on every push
-    * Don't have a CI pipeline? No time like the present!
-
-----
-
-### Static Code Analysis
-
-* <!-- .element: class="fragment" --> Inspect your code without running it
-    * [PHPStan](https://phpstan.org), [Phan](https://github.com/phan/phan), [Psalm](https://psalm.dev/)
-* <!-- .element: class="fragment" --> Find type + logical errors
-* <!-- .element: class="fragment" --> Tune it to avoid a firehose!
-
-Note:
-
-* Static code analysis is a method of analyzing your code without having to run it
-* Great at catching logical errors, type issues, etc.
-* Many can also help you identify dead code paths
-
-----
-
-#### Tuning Static Code Analysis
-
-1. <!-- .element: class="fragment" --> Unknown classes/functions/methods, wrong number of args, etc.
-2. <!-- .element: class="fragment" --> Potentially undefined vars, invalid PHPDocs
-3. <!-- .element: class="fragment" --> Unreachable code, conditionals that will always pass/fail
-4. <!-- .element: class="fragment" --> Strict types, etc.
-
-Note:
-
-* Most static code analysis tools let you dial in the things you care about
-* If you're just introducing static code analysis, start with the lowest level and, as you address (or suppress) issues, you can turn this up (learn to crawl before you can learn to walk)
-
-----
-
-### Leverage Package Managers
-
-* <!-- .element: class="fragment" --> Manage dependencies through package manager(s) (Composer, npm, etc.)
-* <!-- .element: class="fragment" --> Handles intermediary dependencies
-* <!-- .element: class="fragment" --> Negotiates version constraints, conflicts
-
-Note:
-
-* If you find that your app has a bunch of committed third-party dependencies (lib/ directory or similar), try to get these into a package manager like Composer
-    * Easy for these to fall out of date and often the upgrade path is not clear
-    * If possible, determine which version you're currently using and install it via package manager instead
-* Package managers handle intermediary dependencies, especially those that might be shared across packages
-* They also flag version conflicts and constraints
-
-----
-
-#### Composer in Action
-
-```sh [1|2]
-$ composer why-not php 8.3
-some-vendor/some-old package 1.2.3 requires php (^7.0)
-```
-<!-- .element: class="hide-line-numbers" -->
-
-```sh
-$ composer require "php:8.3" --dry-run
-```
-<!-- .element: class="fragment" -->
-
-Note:
-
-* Composer can tell us which of our dependencies don't claim to support PHP 8.3
-* For even further details, you can run `composer require php:8.3` with the `--dry-run` flag and see what conflicts Composer has flagged
-
-----
-
-### Adapter Pattern
-
-* <!-- .element: class="fragment" --> Define an interface, then write library-specific implementations
-* <!-- .element: class="fragment" --> Makes it easier to swap out underlying libraries with minimal interruption
-* <!-- .element: class="fragment" --> Easy to over-do, don't abstract things prematurely!
-
-Note:
-
-* Whether adding new or updating existing dependencies, consider wrapping them in an adapter that you control
-    * Helps decouple your app code from the underlying libraries, but only if you call your interface methods rather than the library directly!!
-* Makes it easier to change the underlying library or sort out differences between versions in one spot
-    * You can also test individual implementations more-easily
-* Use your judgement when this might make sense to use: how likely are you to really swap out Monolog?
-
-----
-
-#### Adapter Pattern & Better Coffee
-
-```php [|5|6]
-use BlamCo\InstantCoffee;
-
-function brewCoffee()
-{
-    $coffee = new InstantCoffee();
-    $coffee->percolate(/* ... */);
-}
-```
-<!-- .element: class="hide-line-numbers" -->
-
-Note:
-
-Let's say your app has a bunch of calls like this to brew instant coffee:
-
-You've been using this for years, but the InstantCoffee package doesn't support PHP and everyone's complaining that it tastes like dishwater.
-
-How can we swap this out so that our various brewCoffee methods can brew better coffee?
-
-----
-
-#### The BeverageInterface
-
-```php [|3-5,8]
-namespace MyApp\Beverages;
-
-interface BeverageInterface
-{
-    public function prepare(): void;
-
-    /* You might also have serve(), drink(), etc. */
-}
-```
-<!-- .element: class="hide-line-numbers" -->
-
-Note:
-
-First, we define the BeverageInterface, which contains methods for anything we might need to do with a beverage.
-
-This is abbreviated to fit on a slide, but we might have methods like prepare, serve, drink, etc.
-
-----
-
-#### Adapter for the old <!-- .element: class="screen-reader-text" -->
-
-```php [5,15|11-14|7-9]
-namespace MyApp\Beverages;
-
-use BlamCo\InstantCoffee;
-
-class InstantCoffeeAdapter implements BeverageInterface
-{
-    public function __construct(
-        private InstantCoffee $coffee
-    ) {}
-
-    public function prepare(): void
-    {
-        $this->coffee->percolate(/* .. */);
-    }
-}
-```
-<!-- .element: class="hide-line-numbers prevent-scroll" -->
-
-Note:
-
-Next, we'll define an adapter that implements this interface for our `InstantCoffee`.
-
-This just moves what we were doing in our `brewCoffee()` method earlier into the prepare method.
-
-We could also define whatever protected/private methods we might need, but the `prepare()` method is how the app will interact with this class.
-
-Notice that we're using constructor property promotion to define the `$coffee` property, which is an instance of `InstantCoffee`.
-
-----
-
-#### Adapter for the new <!-- .element: class="screen-reader-text" -->
-
-```php [5,15|7-9|11-14]
-namespace MyApp\Beverages;
-
-use GoodCoffeeCo\WholeBeanCoffee;
-
-class GoodCoffeeAdapter implements BeverageInterface
-{
-    public function __construct(
-        private WholeBeanCoffee $coffee
-    ) {}
-
-    public function prepare(): void
-    {
-        $this->coffee->grind()->brew();
-    }
-}
-```
-<!-- .element: class="hide-line-numbers prevent-scroll" -->
-
-Note:
-
-Now we'll do the same for our `WholeBeanCoffee` from Good Coffee Co.
-
-We're injecting an instance of `WholeBeanCoffee` via the constructor, then our prepare method is calling the grind and brew methods on that instance.
-
-It doesn't matter what we're doing inside `prepare()` as long as it satisfies the contract defined by the interface.
-
-----
-
-#### Determining what to brew <!-- .element: class="screen-reader-text" -->
-
-```php [|9-14]
-namespace MyApp\Beverages;
-
-use BlamCo\InstantCoffee;
-use GoodCoffeeCo\WholeBeanCoffee;
-use MyApp\FeatureFlags;
-
-class HotBeverageFactory
-{
-    public function getCoffee(): BeverageInterface
-    {
-        return (FeatureFlags::isOn('use_good_coffee'))
-            ? new GoodCoffeeAdapter(new WholeBeanCoffee());
-            : new InstantCoffeeAdapter(new InstantCoffee());
-    }
-}
-```
-<!-- .element: class="hide-line-numbers prevent-scroll" -->
-
-Note:
-
-Now we need a way to determine which type of coffee to make: good coffee or instant coffee.
-
-If we have a DI container, we could put this logic in there. For the sake of simplicitly, we'll define a `HotBeverageFactory` that has a `getCoffee()` method that, depending on the value of hte "use_good_coffee" feature flag, will return one of the two adapters.
-
-Notice that we're using a return type of BeverageInterface: it doesn't matter _which_ coffee adapter we use, we're returning something that implements that interface.
-
-----
-
-#### Brewing our Coffee
-
-```diff [1,6-7|2,8-9]
-- use BlamCo\InstantCoffee;
-+ use MyApp\Beverages\HotBeverageFactory;
-
-  function brewCoffee()
-  {
--     $coffee = new InstantCoffee();
--     $coffee->percolate(/* ... */);
-+     // We don't care what kind, the adapters handle this!
-+     HotBeverageFactory::getCoffee()->prepare();
-  }
-```
-<!-- .element: class="hide-line-numbers" -->
-
-Note:
-
-Finally, we're brewing our coffee. If we revisit our `brewCoffee()` method from earlier and replace the references to `InstantCoffee()` with our new factory method.
-
-We'll do this anywhere that we were manually constructing `InstantCoffee`.
-
-Now, if we decide to switch from Good Coffee Co to **Great** Coffee Co, it's just a matter of writing a new adapter and updating our factory method (or DI container, if we went that route)
-
-----
-
-### Backfill Documentation
-
-![George McFly, writing in his notepad while talking to Marty, saying "I'm writing this down, this is good stuff."](resources/writing-this-down.gif)
-
-Note:
-
-* As you begin digging into the old, crusty code don't be afraid to take notes on your findings!
-    * Remember to capture not only the how, but the _why_!
-* Documentation-only PRs are not only very low-risk, but also help you and other members of your team follow along.
-* Adding docblocks also helps static code analysis tools better analyze your code
-
-----
-
-### [Rector](https://github.com/rectorphp/rector)
-
-* <!-- .element: class="fragment" --> "Automated Refactoring" using the PHP AST
-* <!-- .element: class="fragment" --> Not a magic bullet!
-* <!-- .element: class="fragment" --> Best paired with automated coding standard fixers (<a href="https://github.com/andysnell/downgrade-to-upgrade">h/t Andy Snell</a>)
-
-Note:
-
-* Cool tool I haven't gotten to work with much (yet)
-* Uses Nikita's PHP-Parser library to construct an Abstract Syntax Tree (AST), then apply a series of transformations ("rectors") to the code
-* Not magic: the messier the code, the less effective it will be
-* Note that this will not necessarily respect your coding standards, so best to pair with something like PHP Code Beautifier (phpcbf) or PHP Coding Standards Fixer
+* You may notice, a lot of these metrics match our described, ideal state
+* Gives your managers clear numbers, e.g.:
+    * All 50 servers are now running the latest version of PHP
+    * All 20 direct and 80 intermediate Composer dependencies are up to date
+    * 0 minutes of unscheduled maintenance
+    * 0 incidents
+* Having these numbers makes it very easy for them to say "yes" the next time you propose a refactor!
 
 ---
 
@@ -672,18 +537,18 @@ Note:
 
 Note:
 
-Some strategies that we can use to avoid taking on a ton of technical debt in the first place
+Now that we've covered common forms of technical debt and how we might address them, let's talk about how we can catch ourselves from getting back there again
 
 ----
 
 ### Recognize Trade-offs
 
-How likely is it that taking the easy way now will bite us later?
+How likely is it that taking<br>the easy way now will bite us later?
 
 Note:
 
 * As mentioned earlier, software is all about trade-offs
-* Remember: not all code is meant to last forever; be intentional about new debt
+* Remember: not all code is meant to last forever; be intentional about new debt, and know when you can and cannot compromise
 
 ----
 
@@ -695,7 +560,7 @@ Note:
 
 * If it isn't already, make code review a required part of your team's development.
 * Not only does it help catch bugs before they reach production, but it ensures you're not the only one who understands how the app works.
-* This includes documentations: if a PR changes the way something works it must also include the relevant documentation updates!
+* Code reviews should include documentation: if a PR changes the way something works it must also include the relevant documentation updates!
 
 ----
 
@@ -711,20 +576,37 @@ Note:
 
 ----
 
-### Write tests as you go
+#### Write code that's easy to follow
 
-* <!-- .element: class="fragment" --> Test-Driven Development
-* <!-- .element: class="fragment" --> Red - Green - Refactor
-* <!-- .element: class="fragment" --> Regression tests
+`1337 C0D3 15 4 1053R5`
 
 Note:
 
-Big topic that I've given multiple talks on, but be sure that you're writing tests as you go!
+* One of the really fun things about programming is challenging ourselves to come up with clever new ways to do things
+    * Keeps the 9-5 from totally crushing our souls, but boring can be good!
+* Part of being an effective engineer on a team is not being flashy, but being consistent
+    * Clean, well-documented, and easy to follow code are the mark of a truly-talented developer
+* Strict types, composition over inheritance, and avoiding magic
 
-* When adding a feature, write tests first to describe how it should behave
-* These will fail since you haven't written the code (red). Implement the feature until the tests pass (green), and then clean-up (refactor)
-* When fixing bugs, start by reproducing them with tests
-    * Helps protect against future regressions
+----
+
+### Write tests as you go
+
+* <!-- .element: class="fragment" --> Test-Driven Development
+* <!-- .element: class="fragment" --> Regression tests to fix bugs
+
+Note:
+
+Touched on this earlier, but it's not one of my talks without me harping on testing!
+
+* If you're able, embrace TDD
+    * Write tests first to describe the feature, then write the code necessary to make the tests pass
+    * Encourages more thoughtful design patterns
+    * Built-in defense against unintended changes
+* When fixing bugs, start the same way:
+    * Write tests to reproduce the bugs (tests should fail)
+    * Fix the bug (tests should pass)
+    * The test then protects against future regressions
 
 ----
 
@@ -736,7 +618,7 @@ Note:
 
 Remember that technical debt is a slow boil, so make sure you're giving yourself time for updates.
 
-Maybe it's a day at the end of your sprint, or some time at the beginning or end of the month, but set an upgrade cadence and stick to it
+Maybe it's a day at the end of your sprint or some time at the end of the month, but set an upgrade cadence and stick to it
 
 ----
 
@@ -751,6 +633,7 @@ Note:
 * If something's no longer needed, get rid of it!
     * Thanks to source control, you can always reference it later if needed
 * Write new code in ways that it can be removed when no longer needed
+    * Namespaces, separate Composer packages, etc.
 
 ----
 
@@ -760,11 +643,11 @@ Note:
 
 Note:
 
-On a larger codebase, it's not uncommon to run into situations where one team built a feature using Library A, while another team built a different feature using Library B. Libraries A and B do the same thing, but now you have two different implementations to deal with.
-
-Worse yet, someone who was unaware of Libraries A or B then comes along and introduces Library C!
-
-Make it well-understood _why_ each library is present + link to their docs. This is another place where the adapter pattern can be extremely helpful, since then _nobody_ is interacting with the libraries directly.
+* On a larger codebase, it's not uncommon to have multiple libraries that do the same thing.
+    * Maybe two teams installed Libraries A and B independently, but now there are two ways to do the same thing
+    * Worse yet, another engineer comes in and implements Library C, making the count three!
+* Have some sort of central location (wiki, spreadsheet, etc.) that outlines which libraries are available, where they're being used, and where to go to get further details.
+* Another place where the adapter pattern can help: if people aren't interacting with the libraries directly (just your interface), it matters a lot less
 
 ----
 
@@ -790,11 +673,10 @@ _Please stick to the languages <br>& practices you're used to_
 
 Note:
 
-* Most teams are good with a small set of technologies
-* Great to stretch yourself and experiment with new tech, but a dozen apps in as many languages will make maintenance a huge PITA
-* Be wary of the engineer who is always pushing for the new hotness
-    * Use smaller projects to pilot, but be prepared to throw them away
-    * Every time someone "disrupts the status quo", you're stuck maintaining that!
+* It can be a lot of fun to work with new technologies, but having a dozen apps in as many languages will make maintenance a huge PITA
+    * Most teams are good with a small set of technologies
+* Remember: every time someone "disrupts the status quo" you're stuck maintaining it!
+* If you want to explore new technologies, see if there's a way you can pilot the tech in a small project that could be rewritten or thrown away if necessary
 
 ----
 
@@ -829,6 +711,18 @@ Note:
 * Take advantage of well-tested, documented, and maintained open source projects, but do so in a way that you're not tightly coupled to them
     * Manage them using dependency managers
     * Have a reason for everything you install
+
+----
+
+### What's the best way to eat an ElePHPant?
+
+![The PHP Elephant logo, a profile of a purple, cartoon elephant with the letters "php" along its body](resources/php-elephant.png)<!-- .element: style="max-height: 6em;" -->
+
+You don't, you monster! <!-- .element: class="fragment" -->
+
+Note:
+
+A little riddle for you
 
 ---
 
