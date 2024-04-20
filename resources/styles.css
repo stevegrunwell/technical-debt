@@ -42,18 +42,6 @@
     font-size: .86em;
 }
 
-/* Invert colors for slides with dark backgrounds. */
-.reveal .dark-bg {
-    --r-heading-color: #fff;
-    --r-main-color: #fff;
-
-    color: var(--r-main-color);
-}
-
-.reveal .dark-bg a {
-    color: inherit;
-}
-
 /* Persistent footer */
 .presentation-footer {
     --presentation-footer-color: var(--subdued-text-color);
@@ -83,21 +71,7 @@
     }
 }
 
-/* Enable fragments to replace the space occupied by their predecessors */
-.fragment-replace {
-    position: relative;
-    top: 0 !important;
-}
-
-.fragment-replace > .fragment {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    display: block;
-}
-
-/* Blockquotes and figures */
+/* Blockquotes */
 .reveal blockquote {
     width: 90%;
     box-shadow: none;
@@ -118,16 +92,6 @@
     margin-bottom: 0;
 }
 
-.reveal cite,
-.reveal figure figcaption {
-    font-size: .8em;
-    color: var(--subdued-text-color);
-}
-
-.reveal cite:before {
-    content: '—';
-}
-
 /* Add a bit of extra space between top-level list items. */
 .slides section > ol > li + li,
 .slides section > ul > li + li {
@@ -145,42 +109,13 @@
 }
 
 /* Extra space between elements in a definition list */
-.reveal dl + p,
 dd + dt {
     margin-top: 1em;
-}
-
-/* Comparison tables */
-.comparison-table {
-    display: flex;
-    justify-content: space-between;
-    gap: 4%;
-    text-align: left;
-}
-
-.comparison-table section {
-    flex: 1 1 48%;
-    padding: .5em .75em 1em;
-    background: #fff;
-    box-shadow: 1px 1px 2px #dadada;
-}
-
-.comparison-table section h4 {
-    text-transform: none;
 }
 
 /* Add .hide-line-numbers to code blocks in order to hide line numbering. */
 .hide-line-numbers .hljs-ln-numbers {
     display: none;
-}
-
-.reveal .prevent-scroll,
-.reveal .prevent-scroll code {
-    overflow: hidden;
-}
-
-.reveal .prevent-scroll code {
-    max-height: none;
 }
 
 /* Hide text that's hidden for the sake of presentation. */
@@ -195,10 +130,4 @@ dd + dt {
     position: absolute;
     width: 1px;
     word-wrap: normal;
-}
-
-/* Pull image captions closer to the image */
-.reveal .image-caption {
-    margin-top: calc(-1 * var(--r-block-margin));
-    font-size: .75em;
 }
