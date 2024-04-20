@@ -11,7 +11,9 @@ Steve Grunwell <!-- .element: class="byline" -->
 
 Note:
 
-Before we can address technical debt, we should understand what we're talking about
+Before we can address technical debt, we should understand what we're talking about.
+
+If you ask 10 different engineers to define technical debt, somehow you'll get 15 different answers.
 
 ----
 
@@ -20,8 +22,6 @@ Before we can address technical debt, we should understand what we're talking ab
 Challenges resulting from past decisions to favor <u>speed, simplicity, or cost</u> over<br><u>quality, maintainability, or robustness</u>
 
 Note:
-
-If you ask 10 different engineers to define technical debt, somehow you'll get 15 different answers.
 
 For the sake of the talk today, we're going to define technical debt thusly.
 
@@ -82,7 +82,7 @@ A short econ lesson: business types love talking about opportunity cost.
 
 * New Oxford American Dictionary: the loss of potential gain from other alternatives when one alternative is chosen
 * Is it worth more to address the technical debt or focus on (for example) new features that could drive revenue?
-* Imagine you're a freelancer, making $100/hr. It takes you one hour to mow your lawn. Neighbor kid offers to mow it for $50.
+* Imagine you're a freelancer, making 100/hr. It takes you one hour to mow your lawn. Neighbor kid offers to mow it for $50.
     * On paper, if you do client work in that hour, you come out $50 ahead (assuming you have client work lined up)
     * In reality, maybe you enjoy mowing the lawn (or at least the fresh air) or you've already done as much freelance work as you can bear
 * Keep this in mind as you pitch projects for cleaning up technical debt to your managers!
@@ -239,7 +239,7 @@ Whenever possible, leverage the appropriate package manager for your language's 
 
 ```sh [1|2]
 $ composer why-not php 8.3
-some-vendor/some-old package 1.2.3 requires php (^7.0)
+some-vendor/some-old-package 1.2.3 requires php (^7.0)
 ```
 <!-- .element: class="hide-line-numbers" -->
 
@@ -286,10 +286,9 @@ With those fundamentals out of the way, let's look at some common manifestations
 
 Note:
 
-Not uncommon to come across apps with `lib` directories or similar, full of third-party code **not** managed by a tool like Composer
+* Not uncommon to come across apps with `lib` directories (or similar), full of third-party code **not** managed by a tool like Composer
     * Congratulations, you've effectively adopted that dependency!
     * Updates, conflicts, patches, and bugs are now your responsibility
-
 * When possible, you want to use an appropriate package manager (e.g. Composer)
 * If the library predates Composer, you may want to start looking for more modern solutions
     * You can ease this transition with the Adapter Pattern
@@ -305,11 +304,9 @@ Not uncommon to come across apps with `lib` directories or similar, full of thir
 Note:
 
 * Design pattern where you define a common interface, then write lightweight wrappers that implement those interfaces using different underlying libraries
-    * Decouples your app code from the underlying library: application code only uses the methods on the interface (often injected through a DI container or factory method)
-    * Your adapters are responsible for implementing the interface and interacting with the underlying libraries
-    * For the Laravel devs, this is like binding implementations to interfaces in the service container
-* Once the app is only focused on the interface, which adapter gets used is a matter of configuration
-    * Example: maybe you were sending email with Postmark, and you switch it to Mandrill. As long as they're both configured, nothing about the implementation should need to change (the app just knows it's sending through a `MailerInterface`)
+    * For example, the symfony-mailer package defines the `MailerInterface`, and there are multiple adapters you can use (Mandrill, Postmark, Sendgrid, etc.)
+    * Application code has been decoupled from and isn't concerned with which implementation its given, just the `MailerInterface`
+* Switching (for example) from Postmark to Sendgrid is a matter of configuration, not changes to the actual sending code
 * Makes it easier to test individual implementations
 
 ----
@@ -324,12 +321,11 @@ Note:
 
 Note:
 
-Code that's difficult to navigate through, like a big plate of spaghetti
+* Code that's difficult to navigate through, like a big plate of spaghetti
     * Often the result of poorly thought-out or ever-changing business requirements
     * Causes developers to waste a lot of time sorting things out
     * Difficult to onboard into
     * Breeding ground for tough-to-track-down bugs
-
 * As usual, start with tests
     * The harder the code is to follow, the more important it is that you have broad, e2e tests
 * A step debugger is worth its weight in gold when navigating a noodly codebase
@@ -346,12 +342,11 @@ Code that's difficult to navigate through, like a big plate of spaghetti
 
 Note:
 
-If you find comments like "here be dragons", "I don't know why this works, it just does", and/or "Dear, sweet Jeebus, be careful!", you may have a black box
-    * where data goes in and comes out, but nobody's sure _how_ it works
-
+* If you find comments like "here be dragons", "I don't know why this works, it just does", and/or "Dear, sweet Jeebus, be careful!", you may have a black box
+    * Data goes in and comes out, but nobody's sure _how_ it works
 * In many ways, approach black boxes as you would spaghetti code: tests, step debugging, and writing docs as you go
 * Try to focus first on the big picture (what it's trying to do), then narrow in on the "how"
-* Try not to get burninated
+* Try not to get burninated!
 
 ----
 
@@ -371,23 +366,48 @@ Note:
 
 ----
 
-### Useless Tests
+### Dealing with Bad Tests
 
-* <!-- .element: class="fragment" --> Describe the behavior, not the implementation
-* <!-- .element: class="fragment" --> Too many mocks (including the <abbr title="System Under Test">SUT</abbr>!)
-* <!-- .element: class="fragment" --> Asserting that <u>any</u> exception is thrown
-* <!-- .element: class="fragment" --> Loose comparisons (e.g. false == null)
+* <!-- .element: class="fragment" --> Focus on the what, not the how
+* <!-- .element: class="fragment" --> Refactor tests or code (not both)
+* <!-- .element: class="fragment" --> Strict equality
+* <!-- .element: class="fragment" --> Tests are not infallible!
 
 Note:
 
-Brittle, tightly-coupled tests can sometimes be worse than no tests at all!
+* When writing or refactoring tests, remember that the goal is to ensure our code behaves the way we expect; how it works internally isn't the focus
+    * When people are just learning how to test (or worse, are told "you must have tests for everything" without guidance), they often fall into the trap of testing the implementation, not the intended behavior
+        * Basically just writing the code twice, which defeats the purpose
+    * If I were to unit test your walk to lunch, I might say "when this person walks out the door, then they will arrive in the lunch line" my test will still be valid regardless of whether or not you drop off your backpack or chat with a friend
+* When refactoring, focus on tests _or_ on code, but not both at the same time
+    * Either let the production code that (allegedly) works guide you, or let the tests be your guide
+* Use strict comparisons whenever possible
+    * For no extra effort, let PHP type system warn you when things go awry
+    * If you find yourself putting a try/catch block in a test and it's not to do some heavy introspection on the exception you expect to catch...that's probably a bad sign
+* When you're refactoring, you may find that a test breaks when even the smallest thing changes in the code
+    * Don't be afraid to question the validity of the test! It may have been too-tightly coupled to the original implementation.
+    * Tests are not written in stone!
 
-* When people are just learning how to test (or worse, are told "you must have tests for everything" without guidance), they often fall into the trap of testing the implementation, not the intended behavior
-    * Basically just writing the code twice, which defeats the purpose
-* Tests that mostly serve as tests for the mocking library
-* Overly-broad expectations and assertions
-    * I expect a 500 error when my app can't talk to that API, so lemme just pass the test if I get _any_ exception (even a type error due to my own bug)
-    * `assertEquals()` instead of `assertSame()` where `0` and `false` are two possible returns with *very* different meanings
+----
+
+#### The True Meaning of Code Coverage
+
+* <!-- .element: class="fragment" --> See which parts of your app are covered (and what isn't)
+* <!-- .element: class="fragment" --> What the <abbr title="Change-Resistant Anti-Pattern">CRAP</abbr>?
+* <!-- .element: class="fragment" --> <code>@covers</code> to avoid false-positives
+
+Note:
+
+* PHPUnit (and other test runners) can generate code coverage reports, which show you exactly which lines are touched—and which are not—when you run your test suite
+    * Hot take: code coverage percentages are a terrible metric
+    * Better to have 50% coverage with really solid tests than 100% with garbage
+    * Instead, focus on which areas of your app lack coverage: those are higher risk!
+* In the HTML version of PHPUnit's code coverage, there's a nice dashboard showing the areas that need the most attention
+    * Change-Resistant Anti-Patterns (CRAP): areas that are most likely going to cause you pain as you refactor
+    * Which areas are lacking coverage and/or are especially complex?
+* Using the `@covers` annotation tells PHPUnit "this test class covers this part of the app"
+    * Prevents unrelated code from picking up coverage unintentionally
+    * May lower the coverage %, but improves accuracy
 
 ----
 
@@ -659,9 +679,8 @@ Note:
 
 * At one point or another, many organizations may feel they have to write every part of their stack
 * Do you really want to maintain your own authentication library? Or logging system?
-* Where possible, leverage the tools provided by your framework or other third-party libraries
-    - Dramatically reduces maintenance burden, benefit from existing art
-    - Adapter pattern (discussed earlier) enables you to more-easily change implementations later, if needed
+* Where possible, leverage the tools provided by your framework or other (trusted) third-party libraries
+    * Dramatically reduces maintenance burden, benefit from existing art
 
 ----
 
@@ -677,17 +696,6 @@ Note:
     * Most teams are good with a small set of technologies
 * Remember: every time someone "disrupts the status quo" you're stuck maintaining it!
 * If you want to explore new technologies, see if there's a way you can pilot the tech in a small project that could be rewritten or thrown away if necessary
-
-----
-
-### Web standards are always in style
-
-![Brent Rambo, a kid on a very 1990s-era PC, clicking around before giving a thumbs up and nodding at the camera](resources/brent-rambo.gif)
-
-Note:
-
-* If in doubt, lean on functionality within the programming language. This is generally less prone to major breaking changes than the flavor of the week library or framework
-* If nothing else, plenty of great, well-tested libraries out there that are designed to do one thing exceedingly well.
 
 ---
 
