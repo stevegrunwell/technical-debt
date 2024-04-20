@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Up to my Eyeballs in Technical Debt!</title>
+    <meta property="og:title" content="Up to my Eyeballs in Technical Debt!" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://stevegrunwell.github.io/technical-debt//featured-slide.jpg" />
+    <meta property="og:url" content="https://stevegrunwell.github.io/technical-debt/" />
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/white.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/a11y-dark.css" />
+
+    <link rel="stylesheet" href=".//resources/styles.css" />
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="title-slide" data-hide-footer -->
+# Up to my Eyeballs in Technical Debt!
+
+Steve Grunwell <!-- .element: class="byline" -->
+[@stevegrunwell@phpc.social](https://phpc.social/@stevegrunwell)
+[stevegrunwell.com/slides/technical-debt](https://stevegrunwell.com/slides/technical-debt)
+</script></section><section ><section data-markdown><script type="text/template">
+## Understanding<br>Technical Debt
+
+<aside class="notes"><p>Before we can address technical debt, we should understand what we&#39;re talking about.</p>
+<p>If you ask 10 different engineers to define technical debt, somehow you&#39;ll get 15 different answers.</p>
+</aside></script></section><section data-markdown><script type="text/template">
+### What is Technical Debt?
+
+Challenges resulting from past decisions to favor <u>speed, simplicity, or cost</u> over<br><u>quality, maintainability, or robustness</u>
+
+<aside class="notes"><p>For the sake of the talk today, we&#39;re going to define technical debt thusly.</p>
+<p>Keep in mind, technical debt doesn&#39;t just mean &quot;bad&quot; or &quot;legacy&quot; code, either...</p>
+</aside></script></section><section data-markdown><script type="text/template">
+#### So you've settled on React&hellip;
+
+<dl class="centered">
+    <dt class="fragment" data-fragment-index="0">Pros</dt>
+    <dd class="fragment" data-fragment-index="0">Tons of docs, libraries, etc.</dd>
+    <dd class="fragment" data-fragment-index="1">Popular framework == large hiring pool</dd>
+    <dt class="fragment" data-fragment-index="2">Cons</dt>
+    <dd class="fragment" data-fragment-index="2">Need to keep up with the React ecosystem</dd>
+    <dd class="fragment" data-fragment-index="3">Beholden to decisions of Meta</dd>
+</dl>
+
+<aside class="notes"><p>Right now your front-end team might be deciding to move to React, and that comes with pros and cons</p>
+</aside></script></section><section data-markdown><script type="text/template">
+#### Technical Debt is a Part of Life
+
+* <!-- .element: class="fragment" --> Mo' features, mo' problems
+* <!-- .element: class="fragment" --> No code is 100% maintenance-free<br>(so pick your battles)
+
+<aside class="notes"><ul>
+<li>In the grand scheme of things, you can&#39;t have software without incuring some debt</li>
+<li>The real challenge is getting the maximum benefit with minimal downside</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+#### Software is all about trade-offs
+
+![Meme from Spaceballs (1987) where Dark Helmet is talking to Colonel Sanders in the desert, with the caption "He got the upside, I got the downside. See, there's two sides to every Schwartz"](resources/schwartz.png) <!-- .element: style="max-height: 60vh;" -->
+
+<aside class="notes"><p>Ultimately, software is all about trade-offs:</p>
+<ul>
+<li>do we do it fast, or do we do it right?</li>
+<li>is it worth the time/effort to replace this?</li>
+<li>is fixing this worth the potential risks?</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### ECON Sidequest: Opportunity Cost
+
+_What am I missing out on by doing this instead of something else?_ <!-- .element: class="fragment" -->
+
+<aside class="notes"><p>A short econ lesson: business types love talking about opportunity cost.</p>
+<ul>
+<li>New Oxford American Dictionary: the loss of potential gain from other alternatives when one alternative is chosen</li>
+<li>Is it worth more to address the technical debt or focus on (for example) new features that could drive revenue?</li>
+<li>Imagine you&#39;re a freelancer, making 100/hr. It takes you one hour to mow your lawn. Neighbor kid offers to mow it for $50.<ul>
+<li>On paper, if you do client work in that hour, you come out $50 ahead (assuming you have client work lined up)</li>
+<li>In reality, maybe you enjoy mowing the lawn (or at least the fresh air) or you&#39;ve already done as much freelance work as you can bear</li>
+</ul>
+</li>
+<li>Keep this in mind as you pitch projects for cleaning up technical debt to your managers!</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Technical Debt in the Real World
+
+_Success + Tech Debt are not mutually exclusive!_
+
+* <!-- .element: class="fragment" --> Banking systems still running COBOL
+* <!-- .element: class="fragment" --> WordPress: ~43% of web, "compatible with exceptions" for PHP 8.x
+* <!-- .element: class="fragment" --> Services on outdated servers/dependencies
+* <!-- .element: class="fragment" --> "Legacy" applications
+
+<aside class="notes"><p>Technical debt is everywhere:</p>
+<ul>
+<li>Many financial institutions still run on software written decades ago in COBOL, because the cost + risk of replacing these systems is so high<ul>
+<li>Cheaper to pay handsome saleries to mainframe devs</li>
+</ul>
+</li>
+<li>WordPress, by far the most popular PHP-based CMS, powers roughly 43% of the web (according to W3Techs)<ul>
+<li>Only &quot;beta&quot; support for PHP 8.2 + 8.3, is &quot;compatible with exceptions&quot; for PHP 8.0 + 8.1</li>
+<li>Part of the market strategy is making it easy to run WordPress <em>anywhere</em>, and cheap hosts aren&#39;t usually current on PHP</li>
+</ul>
+</li>
+<li>Services you use every day, perhaps even to power your business, are often running outdated server software, dependencies, etc.<ul>
+<li>Opportunity cost: what value could those engineers be driving instead of constantly updating?</li>
+</ul>
+</li>
+<li>So-called &quot;legacy&quot; applications that still bring in millions in revenue<ul>
+<li>Craigslist made $660M in revenue in 2021!</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+<!-- .slide: data-background-image="resources/lobster-hot-tub.png" data-background-size="cover" data-background-opacity="0.7" -->
+
+### Technical Debt is a Slow Boil
+<!-- .element: style="padding-bottom: 4em;"-->
+
+<aside class="notes"><p>If technical debt is a part of life and isn&#39;t inherently bad, why are we talking about it?</p>
+<p>The problem is when the tech debt piles up and inhibits your team.</p>
+</aside></script></section><section data-markdown><script type="text/template">
+### Signs You May Be In Debt
+
+1. <!-- .element: class="fragment" --> Even small changes are highly-involved
+2. <!-- .element: class="fragment" --> Frequent incidents & outages
+3. <!-- .element: class="fragment" --> Increased attrition
+4. <!-- .element: class="fragment" --> Maintainers stop providing patches
+5. <!-- .element: class="fragment" --> Archive.org becomes your doc site
+
+<aside class="notes"><ol>
+<li>Even small changes like adding a button or updating copy takes hours (or more)<ul>
+<li>New features are nearly-impossible (or end up being written as entirely-separate services)</li>
+</ul>
+</li>
+<li>You&#39;re constantly fighting fires due to things breaking</li>
+<li>Your top engineers are looking for new jobs<ul>
+<li>Even your IDE wants to quit</li>
+</ul>
+</li>
+<li>You have more EOL dependencies than supported ones</li>
+<li>The docs for your library versions are so old you have to visit the Internet Archive to reach them</li>
+</ol>
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
+## Refactoring 101
+
+<aside class="notes"><ul>
+<li>Will talk about specific manifestations of technical debt in a moment</li>
+<li>First, there are a few principles you should know and apply liberally as you refactor:</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Start with Tests
+
+* <!-- .element: class="fragment" --> Safety net for today and tomorrow
+* <!-- .element: class="fragment" --> Focus on the big picture
+* <!-- .element: class="fragment" --> Continuous Integration FTW!
+
+<aside class="notes"><ul>
+<li>Before you change anything, you should make sure that you have good integration and/or e2e tests around your application<ul>
+<li>Critical flows (signup, login, checkout, etc.) and the areas you&#39;re working on</li>
+<li>These act as guardrails or a safety net, ensuring that you don&#39;t accidentally break anything as you refactor</li>
+<li>Tests will then live on, aiding in future refactors</li>
+</ul>
+</li>
+<li>Focus more on integration + e2e tests; individual functions/methods may change considerably, so unit tests are less helpful here<ul>
+<li>Write tests as you write new code during the refactor (including unit tests!)</li>
+</ul>
+</li>
+<li>These tests should be run as part of your CI pipeline on every push<ul>
+<li>Don&#39;t have a CI pipeline? No time like the present!</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Static Code Analysis
+
+* <!-- .element: class="fragment" --> Inspect your code without running it
+    * [PHPStan](https://phpstan.org), [Phan](https://github.com/phan/phan), [Psalm](https://psalm.dev/)
+* <!-- .element: class="fragment" --> Find type + logical errors
+* <!-- .element: class="fragment" --> Tune it to avoid a firehose!
+
+<aside class="notes"><ul>
+<li>Static code analysis is a method of analyzing your code without having to run it</li>
+<li>Great at catching logical errors, type issues, etc.<ul>
+<li>Many can also help you identify dead code paths</li>
+</ul>
+</li>
+<li>Turning it on without tuning will hurt your feelings</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+#### Tuning Static Code Analysis
+
+1. <!-- .element: class="fragment" --> Unknown classes/functions/methods, wrong number of args, etc.
+2. <!-- .element: class="fragment" --> Potentially undefined vars, invalid PHPDocs
+3. <!-- .element: class="fragment" --> Unreachable code, conditionals that will always pass/fail
+4. <!-- .element: class="fragment" --> Strict types, etc.
+
+<aside class="notes"><ul>
+<li>Most static code analysis tools let you dial in the things you care about</li>
+<li>If you&#39;re just introducing static code analysis, start with the lowest level and, as you address (or suppress) issues, you can turn this up</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Backfill Documentation
+
+![George McFly, writing in his notepad while talking to Marty, saying "I'm writing this down, this is good stuff."](resources/writing-this-down.gif)
+
+<aside class="notes"><ul>
+<li>As you begin digging into the old, crusty code don&#39;t be afraid to take notes on your findings!<ul>
+<li>Writing inline docs can help you keep track of your findings both today and tomorrow</li>
+<li>Remember to capture not only the how, but the <em>why</em>!</li>
+</ul>
+</li>
+<li>Documentation-only PRs are not only very low-risk, but also help you and other members of your team follow along.</li>
+<li>Adding docblocks also helps static code analysis tools better analyze your code</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### The Power of Package Managers
+
+* <!-- .element: class="fragment" --> Manage direct + intermediary dependencies
+* <!-- .element: class="fragment" --> Negotiates version constraints, conflicts
+* <!-- .element: class="fragment" --> Easily see what's out of date
+
+<aside class="notes"><p>Whenever possible, leverage the appropriate package manager for your language&#39;s ecosystem. In PHP that&#39;s Composer, and we&#39;re so lucky to have it!</p>
+<ul>
+<li>Allow you to install and update dependencies, including any intermediary dependencies</li>
+<li>Negotiates version constraints and conflicts with other packages</li>
+<li>Easily see what packages have updates available</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+#### Composer in Action
+
+```sh [1|2]
+$ composer why-not php 8.3
+some-vendor/some-old-package 1.2.3 requires php (^7.0)
+```
+<!-- .element: class="hide-line-numbers" -->
+
+```sh
+$ composer require "php:8.3" --dry-run
+```
+<!-- .element: class="fragment" -->
+
+<aside class="notes"><ul>
+<li>Composer can tell us which of our dependencies don&#39;t claim to support PHP 8.3</li>
+<li>For even further details, you can run <code>composer require php:8.3</code> with the <code>--dry-run</code> flag and see what conflicts Composer has flagged</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Step Debugging
+
+* <!-- .element: class="fragment" --> Pause your code at certain points
+* <!-- .element: class="fragment" --> Inspect values, dig into function calls
+* <!-- .element: class="fragment" --> Worth the effort to configure!
+
+<aside class="notes"><p>If you really want to level up your refactoring game, learn to use a step debugger like Xdebug</p>
+<ul>
+<li>Allows you to set breakpoints and freeze the execution when you reach it</li>
+<li>From there, you can inspect the values of different variables, see the current stacktrace, and then progress through your code, one step at a time</li>
+<li>Can be challenging to get set up, but way more powerful than die debugging</li>
+</ul>
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
+## Common Manifestations<br>of Technical Debt<br><small>(and how to fix them)</small>
+
+<aside class="notes"><p>With those fundamentals out of the way, let&#39;s look at some common manifestations of technical debt and how we might go about addressing them:</p>
+</aside></script></section><section data-markdown><script type="text/template">
+### Committed libraries
+
+* <!-- .element: class="fragment" --> Replace with copy managed by Composer
+* <!-- .element: class="fragment" --> Consider modern replacements
+
+<aside class="notes"><ul>
+<li>Not uncommon to come across apps with <code>lib</code> directories (or similar), full of third-party code <strong>not</strong> managed by a tool like Composer<ul>
+<li>Congratulations, you&#39;ve effectively adopted that dependency!</li>
+<li>Updates, conflicts, patches, and bugs are now your responsibility</li>
+</ul>
+</li>
+<li>When possible, you want to use an appropriate package manager (e.g. Composer)</li>
+<li>If the library predates Composer, you may want to start looking for more modern solutions<ul>
+<li>You can ease this transition with the Adapter Pattern</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+#### Adapter Pattern
+
+* <!-- .element: class="fragment" --> Define an interface, then write library-specific implementations
+* <!-- .element: class="fragment" --> Makes it easier to swap out underlying libraries with minimal interruption
+* <!-- .element: class="fragment" --> Easier to test individual implementations
+
+<aside class="notes"><ul>
+<li>Design pattern where you define a common interface, then write lightweight wrappers that implement those interfaces using different underlying libraries<ul>
+<li>For example, the symfony-mailer package defines the <code>MailerInterface</code>, and there are multiple adapters you can use (Mandrill, Postmark, Sendgrid, etc.)</li>
+<li>Application code has been decoupled from and isn&#39;t concerned with which implementation its given, just the <code>MailerInterface</code></li>
+</ul>
+</li>
+<li>Switching (for example) from Postmark to Sendgrid is a matter of configuration, not changes to the actual sending code</li>
+<li>Makes it easier to test individual implementations</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+<!-- .slide: class="has-background-image" data-background="resources/spaghetti.jpg" data-background-size="cover" data-background-opacity="0.3" -->
+
+### Spaghetti Code
+
+* <!-- .element: class="fragment" --> Don't forget to bring a test!
+* <!-- .element: class="fragment" --> Step debuggers will be a huge help!
+* <!-- .element: class="fragment" --> Extract what you can
+
+<aside class="notes"><ul>
+<li>Code that&#39;s difficult to navigate through, like a big plate of spaghetti<ul>
+<li>Often the result of poorly thought-out or ever-changing business requirements</li>
+<li>Causes developers to waste a lot of time sorting things out</li>
+<li>Difficult to onboard into</li>
+<li>Breeding ground for tough-to-track-down bugs</li>
+</ul>
+</li>
+<li>As usual, start with tests<ul>
+<li>The harder the code is to follow, the more important it is that you have broad, e2e tests</li>
+</ul>
+</li>
+<li>A step debugger is worth its weight in gold when navigating a noodly codebase</li>
+<li>As you can, find ways to extract pieces into standalone classes or methods that you can more-easily test</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+<!-- .slide: data-background-image="resources/trogdor.png" data-background-repeat="no-repeat" data-background-size="contain" data-background-position="10% center" data-background-opacity="0.3" -->
+
+### Black Boxes
+
+* <!-- .element: class="fragment" --> Box of spaghetti?
+* <!-- .element: class="fragment" --> Start broad, then go narrow
+
+<aside class="notes"><ul>
+<li>If you find comments like &quot;here be dragons&quot;, &quot;I don&#39;t know why this works, it just does&quot;, and/or &quot;Dear, sweet Jeebus, be careful!&quot;, you may have a black box<ul>
+<li>Data goes in and comes out, but nobody&#39;s sure <em>how</em> it works</li>
+</ul>
+</li>
+<li>In many ways, approach black boxes as you would spaghetti code: tests, step debugging, and writing docs as you go</li>
+<li>Try to focus first on the big picture (what it&#39;s trying to do), then narrow in on the &quot;how&quot;</li>
+<li>Try not to get burninated!</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### @todo comments
+
+```php
+/**
+ * @todo WTF is going on here?! 😱
+ */
+```
+
+<aside class="notes"><ul>
+<li><code>@todo</code> comments aren&#39;t inheriently-evil, but can be good indicator of incomplete/buggy code</li>
+<li>Try to be as descriptive as possible; can this be linked to a Jira ticket or something?</li>
+<li>Be sure to read existing comments: sometimes you&#39;ll find the &quot;todo&quot; is already &quot;todone&quot;</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Dealing with Bad Tests
+
+* <!-- .element: class="fragment" --> Focus on the what, not the how
+* <!-- .element: class="fragment" --> Refactor tests or code (not both)
+* <!-- .element: class="fragment" --> Strict equality
+* <!-- .element: class="fragment" --> Tests are not infallible!
+
+<aside class="notes"><ul>
+<li>When writing or refactoring tests, remember that the goal is to ensure our code behaves the way we expect; how it works internally isn&#39;t the focus<ul>
+<li>When people are just learning how to test (or worse, are told &quot;you must have tests for everything&quot; without guidance), they often fall into the trap of testing the implementation, not the intended behavior<ul>
+<li>Basically just writing the code twice, which defeats the purpose</li>
+</ul>
+</li>
+<li>If I were to unit test your walk to lunch, I might say &quot;when this person walks out the door, then they will arrive in the lunch line&quot; my test will still be valid regardless of whether or not you drop off your backpack or chat with a friend</li>
+</ul>
+</li>
+<li>When refactoring, focus on tests <em>or</em> on code, but not both at the same time<ul>
+<li>Either let the production code that (allegedly) works guide you, or let the tests be your guide</li>
+</ul>
+</li>
+<li>Use strict comparisons whenever possible<ul>
+<li>For no extra effort, let PHP type system warn you when things go awry</li>
+<li>If you find yourself putting a try/catch block in a test and it&#39;s not to do some heavy introspection on the exception you expect to catch...that&#39;s probably a bad sign</li>
+</ul>
+</li>
+<li>When you&#39;re refactoring, you may find that a test breaks when even the smallest thing changes in the code<ul>
+<li>Don&#39;t be afraid to question the validity of the test! It may have been too-tightly coupled to the original implementation.</li>
+<li>Tests are not written in stone!</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+#### The True Meaning of Code Coverage
+
+* <!-- .element: class="fragment" --> See which parts of your app are covered (and what isn't)
+* <!-- .element: class="fragment" --> What the <abbr title="Change-Resistant Anti-Pattern">CRAP</abbr>?
+* <!-- .element: class="fragment" --> <code>@covers</code> to avoid false-positives
+
+<aside class="notes"><ul>
+<li>PHPUnit (and other test runners) can generate code coverage reports, which show you exactly which lines are touched—and which are not—when you run your test suite<ul>
+<li>Hot take: code coverage percentages are a terrible metric</li>
+<li>Better to have 50% coverage with really solid tests than 100% with garbage</li>
+<li>Instead, focus on which areas of your app lack coverage: those are higher risk!</li>
+</ul>
+</li>
+<li>In the HTML version of PHPUnit&#39;s code coverage, there&#39;s a nice dashboard showing the areas that need the most attention<ul>
+<li>Change-Resistant Anti-Patterns (CRAP): areas that are most likely going to cause you pain as you refactor</li>
+<li>Which areas are lacking coverage and/or are especially complex?</li>
+</ul>
+</li>
+<li>Using the <code>@covers</code> annotation tells PHPUnit &quot;this test class covers this part of the app&quot;<ul>
+<li>Prevents unrelated code from picking up coverage unintentionally</li>
+<li>May lower the coverage %, but improves accuracy</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Branching for special cases
+<!-- .element: class="screen-reader-text" -->
+
+![Four panel comic from Commit Strip. In the first panel, the developer tells the Product Manager "No. Just No." as the PM pleads "Come on...only one small exception". Panel two continues, with the developer stating "It's a self-service SaaS, we can't handle individual requests" while the PM reasons "Come on...just a tiny IF. A ridiculously tiny IF...". In panel three, the PM continues "It's one of our biggest customers...I'll owe you one!". The developer hesitates, saying "I shouldn't...". In panel four, set later, the Database Engineer asks the dev "Where you do you manage clients' special requests", to which the dev responds defeatedly "model/clients.php. There's a switch with 145 cases, just add yours".](resources/commitstrip-exceptions.jpg) <!-- .element: style="max-height: 80vh;"-->
+
+<aside class="notes"><ul>
+<li>Codebase is full of one-off &quot;well, this particular customer requires this extra thing be enabled&quot; conditionals<ul>
+<li>Far more difficult to keep everything straight</li>
+<li>These &quot;quick if statements&quot; are rarely given appropriate tests, meaning when something breaks it&#39;s often for the high-value customers</li>
+<li>If customers churn, these may never get cleaned up</li>
+</ul>
+</li>
+<li>Ideally, these should be seen as attributes or flags you can enable on a per-user basis<ul>
+<li>Ensure that you treat it as you would any other feature (including tests!)</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Dead Code
+
+!["Bring out yer dead" bit from Monty Python and the Holy Grail](resources/bring-out-yer-dead.gif)
+
+<aside class="notes"><ul>
+<li>Sometimes it can be really hard to say goodbye to code that we wrote, even if it&#39;s no longer necessary<ul>
+<li>Version 2 is live, but nobody removed v1 after launch</li>
+<li>Code that&#39;s outlived its usefulness: One-time migration scripts, COVID-19 promos, etc.</li>
+</ul>
+</li>
+<li>Thanks to version control, dead code&#39;s never truly gone (but it doesn&#39;t need to be cluttering up your repo)</li>
+<li>Leverage static code analysis, IDE capabilities, logging, and/or observability tools to see if a block of code is truly dead</li>
+</ul>
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
+## Technical Debt<br>Repayment Plan
+
+<aside class="notes"><ul>
+<li>You just joined a new team with a large, legacy codebase serving millions of users</li>
+<li>Can&#39;t just throw everything away and start over, so where do you start?</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Define scope
+
+1. <!-- .element: class="fragment" -->What are we hoping to solve?
+2. <!-- .element: class="fragment" -->Why do we want to do this?
+3. <!-- .element: class="fragment" -->What's our ideal state?
+4. <!-- .element: class="fragment" -->How will we address this?
+5. <!-- .element: class="fragment" -->How do we measure success?
+
+<aside class="notes"><p>Jumping right in without a strategy is likely how the app ended up with all this debt, so let&#39;s be smarter as we fix things</p>
+<ol>
+<li>What is it that we&#39;re trying to solve? Replace an old library? Untangle a complex web?</li>
+<li>Why are you tackling this? Performance? Is it a security risk? A pain point for users or your team?</li>
+<li>What&#39;s the ideal state? Where do you hope to be after this?</li>
+<li>How do you get from A to B? What needs to happen?</li>
+<li>How will you measure success?<ul>
+<li>Very important when trying to sell management on the project</li>
+</ul>
+</li>
+</ol>
+</aside></script></section><section data-markdown><script type="text/template">
+### Example: Upgrade to PHP 8
+
+<aside class="notes"><p>Here&#39;s an example that will probably resonate: upgrading your app so it runs on PHP 8.</p>
+</aside></script></section><section data-markdown><script type="text/template">
+#### Why do we want to do this?
+
+* <!-- .element: class="fragment" --> PHP 8 is more powerful and faster
+* <!-- .element: class="fragment" --> PHP 7.x is EOL (security risk)
+* <!-- .element: class="fragment" --> Packages dropping 7.x support
+
+<aside class="notes"><p>So we want to upgrade, but why?</p>
+<ul>
+<li>PHP 8 has a lot of powerful new features and can be more performant</li>
+<li>PHP 7.x is EOL, so we won&#39;t get new security patches</li>
+<li>Packages we rely on are dropping PHP 7.x support, so we won&#39;t get new features or patches</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+#### What's our ideal state?
+
+* <!-- .element: class="fragment" --> All app servers are running PHP 8.3
+* <!-- .element: class="fragment" --> Composer dependencies are updated<br>to their latest versions
+* <!-- .element: class="fragment" --> No impact to application behavior
+
+<aside class="notes"><p>Just because we&#39;re going to PHP 8 doesn&#39;t mean we have to use all of its features on day one.</p>
+<p>Notice we didn&#39;t mention anything about, for example, ripping out that old enum library and using PHP&#39;s native enums. One thing at a time!</p>
+</aside></script></section><section data-markdown><script type="text/template">
+#### How will we address this?
+
+1. <!-- .element: class="fragment" --> Install/upgrade static code analysis tools
+2. <!-- .element: class="fragment" --> Resolve issues caught by static code analysis, test suite(s)
+3. <!-- .element: class="fragment" --> Pre-prod testing w/ PHP 8.3
+4. <!-- .element: class="fragment" --> Slow-roll 8.3 image across hosts
+5. <!-- .element: class="fragment" --> Clean up PHP 7.x leftovers
+
+<aside class="notes"><p>Now we know what we&#39;re hoping to accomplish, so now we need to determine how we get there</p>
+<ol>
+<li>If we already have a static code analysis tool, make sure it&#39;s current.<ul>
+<li>If not, now would be a good time to install one</li>
+</ul>
+</li>
+<li>Tell the tool that we&#39;re targeting PHP 8 and let it tell us where we might have issues. Then get the tests running on PHP 8<ul>
+<li>Good test suites will cover large portions of the app</li>
+<li>No tests? This would be a very good time to start!</li>
+</ul>
+</li>
+<li>Next, we want to manually test things<ul>
+<li>If you have a QA team, they&#39;ll be vital here</li>
+<li>Involve SMEs to ensure things continue to work as expected</li>
+</ul>
+</li>
+<li>Finally, start rolling out PHP 8 on production<ul>
+<li>If possible, don&#39;t upgrade all servers at once</li>
+</ul>
+</li>
+<li>Once you&#39;re on PHP 8, clean up any PHP 7-specific paths you may have added</li>
+</ol>
+</aside></script></section><section data-markdown><script type="text/template">
+#### How do we measure success?
+
+1. <!-- .element: class="fragment" --> All app servers are running PHP 8.3
+2. <!-- .element: class="fragment" --> All Composer dependencies are up-to-date
+3. <!-- .element: class="fragment" --> No unscheduled downtime or production errors related to upgrade
+
+<aside class="notes"><ul>
+<li>You may notice, a lot of these metrics match our described, ideal state</li>
+<li>Gives your managers clear numbers, e.g.:<ul>
+<li>All 50 servers are now running the latest version of PHP</li>
+<li>All 20 direct and 80 intermediate Composer dependencies are up to date</li>
+<li>0 minutes of unscheduled maintenance</li>
+<li>0 incidents</li>
+</ul>
+</li>
+<li>Having these numbers makes it very easy for them to say &quot;yes&quot; the next time you propose a refactor!</li>
+</ul>
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
+## Preventing Technical Debt
+
+<aside class="notes"><p>Now that we&#39;ve covered common forms of technical debt and how we might address them, let&#39;s talk about how we can catch ourselves from getting back there again</p>
+</aside></script></section><section data-markdown><script type="text/template">
+### Recognize Trade-offs
+
+How likely is it that taking<br>the easy way now will bite us later?
+
+<aside class="notes"><ul>
+<li>As mentioned earlier, software is all about trade-offs</li>
+<li>Remember: not all code is meant to last forever; be intentional about new debt, and know when you can and cannot compromise</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Code review
+
+![Lisa Simpson, desperate for attention from Marge (or anyone, really), hopping up and down pleading "Grade me! Look at me! Evaluate and rank me!"](resources/lisa-grade-me.gif)
+
+<aside class="notes"><ul>
+<li>If it isn&#39;t already, make code review a required part of your team&#39;s development workflow.</li>
+<li>Not only does it help catch bugs before they reach production, but it ensures you&#39;re not the only one who understands how the app works.</li>
+<li>Code reviews should include documentation: if a PR changes the way something works it must also include the relevant documentation updates!</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Embrace Coding Standards
+
+A good codebase reads like it was written by a team that was on the same page.
+
+<aside class="notes"><ul>
+<li>Coding standards help keep the codebase organized and readable</li>
+<li>Not just spaces v. tabs, but procedural v. OOP, namespaces, organization, etc.</li>
+<li>Enforce standards with tools like PHP_CodeSniffer and PHP Coding Standards Fixer</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+#### Write code that's easy to follow
+
+`1337 C0D3 15 4 1053R5`
+
+<aside class="notes"><ul>
+<li>One of the really fun things about programming is challenging ourselves to come up with clever new ways to do things<ul>
+<li>Keeps the 9-5 from totally crushing our souls, but boring can be good!</li>
+</ul>
+</li>
+<li>Part of being an effective engineer on a team is not being flashy, but being consistent<ul>
+<li>Clean, well-documented, and easy to follow code are the mark of a truly-talented developer</li>
+</ul>
+</li>
+<li>Strict types, composition over inheritance, and avoiding magic</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Write tests as you go
+
+* <!-- .element: class="fragment" --> Test-Driven Development
+* <!-- .element: class="fragment" --> Regression tests to fix bugs
+
+<aside class="notes"><p>Touched on this earlier, but it&#39;s not one of my talks without me harping on testing!</p>
+<ul>
+<li>If you&#39;re able, embrace TDD<ul>
+<li>Write tests first to describe the feature, then write the code necessary to make the tests pass</li>
+<li>Encourages more thoughtful design patterns</li>
+<li>Built-in defense against unintended changes</li>
+</ul>
+</li>
+<li>When fixing bugs, start the same way:<ul>
+<li>Write tests to reproduce the bugs (tests should fail)</li>
+<li>Fix the bug (tests should pass)</li>
+<li>The test then protects against future regressions</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Plan for updates
+
+![Geordi La Forge meme where he rejects "wait too long, apply tons of updates at once" in favor of "update incrementally on a regular cadence"](resources/geordi.jpg)
+
+<aside class="notes"><p>Remember that technical debt is a slow boil, so make sure you&#39;re giving yourself time for updates.</p>
+<p>Maybe it&#39;s a day at the end of your sprint or some time at the end of the month, but set an upgrade cadence and stick to it</p>
+</aside></script></section><section data-markdown><script type="text/template">
+### Removing the Clutter
+
+* <!-- .element: class="fragment" --> Throw away what's not needed
+* <!-- .element: class="fragment" --> Write new code so it can be removed easily
+
+<aside class="notes"><ul>
+<li>Some of the best commits you can make are those that simply remove unneeded code.</li>
+<li>If something&#39;s no longer needed, get rid of it!<ul>
+<li>Thanks to source control, you can always reference it later if needed</li>
+</ul>
+</li>
+<li>Write new code in ways that it can be removed when no longer needed<ul>
+<li>Namespaces, separate Composer packages, etc.</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+<!-- .slide: data-background-image="resources/spiderman-pointing.jpg" data-background-size="cover" data-background-opacity="0.4" -->
+
+### No Two Ways About It!
+
+<aside class="notes"><ul>
+<li>On a larger codebase, it&#39;s not uncommon to have multiple libraries that do the same thing.<ul>
+<li>Maybe two teams installed Libraries A and B independently, but now there are two ways to do the same thing</li>
+<li>Worse yet, another engineer comes in and implements Library C, making the count three!</li>
+</ul>
+</li>
+<li>Have some sort of central location (wiki, spreadsheet, etc.) that outlines which libraries are available, where they&#39;re being used, and where to go to get further details.</li>
+<li>Another place where the adapter pattern can help: if people aren&#39;t interacting with the libraries directly (just your interface), it matters a lot less</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### Resist Not Invented Here (NIH)
+
+![Homer Simpson, lounging on the couch with a cigar, laughing that "everyone is stupid but me", then drifiting off and starting a fire as the cigar falls out of his mouth](resources/homer-stupid.gif)
+
+<aside class="notes"><ul>
+<li>At one point or another, many organizations may feel they have to write every part of their stack<ul>
+<li>Pride? Hubris?</li>
+</ul>
+</li>
+<li>Do you really want to maintain your own authentication library? Or logging system?</li>
+<li>Where possible, leverage the tools provided by your framework or other (trusted) third-party libraries<ul>
+<li>Dramatically reduces maintenance burden, benefit from existing art</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+<!-- .slide: data-background-image="resources/waterfall.jpg" data-background-size="cover" data-background-opacity="0.3" -->
+
+### Don't Go Chasing Waterfalls
+
+_Please stick to the languages <br>& practices you're used to_
+
+<aside class="notes"><ul>
+<li>It can be a lot of fun to work with new technologies, but having a dozen apps in as many languages will make maintenance a huge PITA<ul>
+<li>Most teams are good with a small set of technologies</li>
+</ul>
+</li>
+<li>Remember: every time someone &quot;disrupts the status quo&quot; you&#39;re stuck maintaining it!</li>
+<li>If you want to explore new technologies, see if there&#39;s a way you can pilot the tech in a small project that could be rewritten or thrown away if necessary</li>
+</ul>
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
+## So, what have we learned?
+
+* <!-- .element: class="fragment" --> Technical debt is a part of life
+* <!-- .element: class="fragment" --> Watch for red flags
+* <!-- .element: class="fragment" --> Identify, plan, execute
+* <!-- .element: class="fragment" --> Test early, test often
+* <!-- .element: class="fragment" --> Be empowered—not hindered—by open-source
+
+<aside class="notes"><ul>
+<li>Technical debt is a part of life, but by making good decisions we can minimize its impact.<ul>
+<li>It&#39;s only a problem if it&#39;s costing you time, money, and/or sanity</li>
+</ul>
+</li>
+<li>Ever vigilent, always watching for red flags we discussed (spaghetti code, committed libraries, bad tests, branching for special cases, dead code, etc.)</li>
+<li>Identify <em>what</em> you want to solve, then make a plan</li>
+<li>A solid test suite is worth its weight in gold<ul>
+<li>E2E and integration tests at the start help ensure your app doesn&#39;t break as you refactor</li>
+<li>Write regression tests as you fix things</li>
+</ul>
+</li>
+<li>Take advantage of well-tested, documented, and maintained open source projects, but do so in a way that you&#39;re not tightly coupled to them<ul>
+<li>Manage them using dependency managers</li>
+<li>Have a reason for everything you install</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
+### What's the best way to eat an ElePHPant?
+
+![The PHP Elephant logo, a profile of a purple, cartoon elephant with the letters "php" along its body](resources/php-elephant.png)<!-- .element: style="max-height: 6em;" -->
+
+You don't, you monster! <!-- .element: class="fragment" -->
+
+<aside class="notes"><p>A little riddle for you</p>
+</aside></script></section></section><section  data-markdown><script type="text/template">
+## Thank You!
+
+Steve Grunwell<br>
+<span style="font-size: .75em;">Staff Software Engineer, Mailchimp</span>
+
+[stevegrunwell.com/slides/technical-debt](https://stevegrunwell.com/slides/technical-debt)<!-- .element: class="slides-link" -->
+
+<aside class="notes"><p>REMEMBER TO REPEAT THE QUESTION!!</p>
+</aside></script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"controls":true,"controlsTutorial":false,"pause":true,"pdfSeparateFragments":false,"progress":false,"slideNumber":false,"transition":"none"}, queryOptions);
+    </script>
+
+    <script src=".//resources/scripts.js"></script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>

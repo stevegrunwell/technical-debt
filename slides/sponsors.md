@@ -1,1 +1,0 @@
-<!-- .slide: data-background-image="resources/phpworld-sponsors.jpg" data-background-size="contain" data-background-color="#533e67" -->
