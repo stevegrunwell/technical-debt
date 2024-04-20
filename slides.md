@@ -578,7 +578,7 @@ Note:
 
 Note:
 
-* If it isn't already, make code review a required part of your team's development.
+* If it isn't already, make code review a required part of your team's development workflow.
 * Not only does it help catch bugs before they reach production, but it ensures you're not the only one who understands how the app works.
 * Code reviews should include documentation: if a PR changes the way something works it must also include the relevant documentation updates!
 
@@ -678,6 +678,7 @@ Note:
 Note:
 
 * At one point or another, many organizations may feel they have to write every part of their stack
+    * Pride? Hubris?
 * Do you really want to maintain your own authentication library? Or logging system?
 * Where possible, leverage the tools provided by your framework or other (trusted) third-party libraries
     * Dramatically reduces maintenance burden, benefit from existing art
@@ -711,7 +712,7 @@ Note:
 
 * Technical debt is a part of life, but by making good decisions we can minimize its impact.
     * It's only a problem if it's costing you time, money, and/or sanity
-* Ever vigilent, always watching for red flags we discussed: spaghetti code, committed libraries, todo comments, dragon lairs, bad+brittle tests, branching for special cases, dead code
+* Ever vigilent, always watching for red flags we discussed (spaghetti code, committed libraries, bad tests, branching for special cases, dead code, etc.)
 * Identify *what* you want to solve, then make a plan
 * A solid test suite is worth its weight in gold
     * E2E and integration tests at the start help ensure your app doesn't break as you refactor
@@ -740,3 +741,7 @@ Steve Grunwell<br>
 <span style="font-size: .75em;">Staff Software Engineer, Mailchimp</span>
 
 [stevegrunwell.com/slides/technical-debt](https://stevegrunwell.com/slides/technical-debt)<!-- .element: class="slides-link" -->
+
+Note:
+
+REMEMBER TO REPEAT THE QUESTION!!

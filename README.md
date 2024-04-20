@@ -8,11 +8,11 @@ This talk covers the concept of technical debt, its potential to devastate proje
 
 ## Resources
 
-* [Downgrade to Upgrade and Other Composer Tricks](https://github.com/andysnell/downgrade-to-upgrade) — Presentation by [@AndySnell](https://github.com/andysnell) that covers (among other things) Rector
 * [PHP Compatibility and WordPress Versions](https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/) - Chart showing PHP compatibility across WordPress versions
 * [Usage Statistics and Market Share of WordPress](https://w3techs.com/technologies/details/cm-wordpress) - W3Techs metrics for WordPress
 * [The Essential Craigslist Statistics Every Freelancer Should Know in 2023](https://firstsiteguide.com/craigslist-stats/) - Did I remember to mention how much revenue Craigslist brings in? This is where it comes from!
 * [What is Opportunity Cost?](https://www.investopedia.com/terms/o/opportunitycost.asp) - Article on Opportunity Cost from Investopedia
+* [Downgrade to Upgrade and Other Composer Tricks](https://github.com/andysnell/downgrade-to-upgrade) — Presentation by [@AndySnell](https://github.com/andysnell) that covers (among other things) Rector
 
 ### Tools
 
