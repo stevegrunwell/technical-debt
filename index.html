@@ -293,6 +293,9 @@ $ composer require "php:8.3" --dry-run
 * <!-- .element: class="fragment" --> Makes it easier to swap out underlying libraries with minimal interruption
 * <!-- .element: class="fragment" --> Easier to test individual implementations
 
+[stevegrunwell.com/blog/adapter-pattern](https://stevegrunwell.com/blog/adapter-pattern/)
+<!-- .element: class="fragment" style="margin-top:1em;" -->
+
 <aside class="notes"><ul>
 <li>Design pattern where you define a common interface, then write lightweight wrappers that implement those interfaces using different underlying libraries<ul>
 <li>For example, the symfony-mailer package defines the <code>MailerInterface</code>, and there are multiple adapters you can use (Mandrill, Postmark, Sendgrid, etc.)</li>
@@ -301,6 +304,7 @@ $ composer require "php:8.3" --dry-run
 </li>
 <li>Switching (for example) from Postmark to Sendgrid is a matter of configuration, not changes to the actual sending code</li>
 <li>Makes it easier to test individual implementations</li>
+<li>Blog post I wrote after having to cut down this part of the talk considerably</li>
 </ul>
 </aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: class="has-background-image" data-background="resources/spaghetti.jpg" data-background-size="cover" data-background-opacity="0.3" -->
