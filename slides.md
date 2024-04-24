@@ -301,6 +301,9 @@ Note:
 * <!-- .element: class="fragment" --> Makes it easier to swap out underlying libraries with minimal interruption
 * <!-- .element: class="fragment" --> Easier to test individual implementations
 
+[stevegrunwell.com/blog/adapter-pattern](https://stevegrunwell.com/blog/adapter-pattern/)
+<!-- .element: class="fragment" style="margin-top:1em;" -->
+
 Note:
 
 * Design pattern where you define a common interface, then write lightweight wrappers that implement those interfaces using different underlying libraries
@@ -308,6 +311,7 @@ Note:
     * Application code has been decoupled from and isn't concerned with which implementation its given, just the `MailerInterface`
 * Switching (for example) from Postmark to Sendgrid is a matter of configuration, not changes to the actual sending code
 * Makes it easier to test individual implementations
+* Blog post I wrote after having to cut down this part of the talk considerably
 
 ----
 

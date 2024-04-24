@@ -12,6 +12,7 @@ This talk covers the concept of technical debt, its potential to devastate proje
 * [Usage Statistics and Market Share of WordPress](https://w3techs.com/technologies/details/cm-wordpress) - W3Techs metrics for WordPress
 * [The Essential Craigslist Statistics Every Freelancer Should Know in 2023](https://firstsiteguide.com/craigslist-stats/) - Did I remember to mention how much revenue Craigslist brings in? This is where it comes from!
 * [What is Opportunity Cost?](https://www.investopedia.com/terms/o/opportunitycost.asp) - Article on Opportunity Cost from Investopedia
+* [Decouple Your Application Code with the Adapter Pattern](https://stevegrunwell.com/blog/adapter-pattern/) - Blog post (by me) about the Adapter Pattern, constructed mostly of content that had to be cut for time.
 * [Downgrade to Upgrade and Other Composer Tricks](https://github.com/andysnell/downgrade-to-upgrade) — Presentation by [@AndySnell](https://github.com/andysnell) that covers (among other things) Rector
 
 ### Tools
