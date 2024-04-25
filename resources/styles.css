@@ -131,3 +131,11 @@ dd + dt {
     width: 1px;
     word-wrap: normal;
 }
+
+/* Print styles */
+@media print {
+    /* When code highlighting, don't dim anything. */
+    .reveal .hljs.has-highlights tr {
+        opacity: 1!important;
+    }
+}
