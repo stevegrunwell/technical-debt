@@ -26,7 +26,7 @@ This talk covers the concept of technical debt, its potential to devastate proje
 
 ## Presentation History
 
-* [php[tek] 2024](https://tek.phparch.com/) — April 25, 2024 ([Joind.in](https://joind.in/event/phptek-2024/up-to-my-eyeballs-in-technical-debt))
+* [php[tek] 2024](https://tek.phparch.com/) — April 25, 2024 ([Joind.in](https://joind.in/event/phptek-2024/up-to-my-eyeballs-in-technical-debt), [PDF](https://github.com/stevegrunwell/technical-debt/releases/download/phptek-2024/slides.pdf))
 * [PHPDX](https://www.meetup.com/PDX-PHP/events/bfwlbqyxmbxb/) — September 17, 2018 ([PDF](https://github.com/stevegrunwell/technical-debt/releases/download/phpdx/slides.pdf))
 * [php[world] 2016](https://world2016.phparch.com/) - November 17, 2016 ([Joind.in](https://joind.in/talk/49e0b), [PDF](https://github.com/stevegrunwell/technical-debt/releases/download/php-world/slides.pdf))
 * [WordPress DC Meetup](https://www.meetup.com/wordpressdc/events/235165630/) - November 15, 2016 ([PDF](https://github.com/stevegrunwell/technical-debt/releases/download/wordpress-dc/slides.pdf))
